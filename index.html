@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <!-- styles -->
+        <link rel="stylesheet" href="styles.css">
+
+        <!-- pre-load scripts -->
+        <script type="text/javascript" src="view_variables.js"></script>
+        <script type="text/javascript" src="const.js"></script>
+
+    </head>
+
+    <body>
+
+        <!-- canvas, takes the entire background -->
+        <canvas id="main_canvas"></canvas>
+
+        <!-- allow view movement on mouse hover -->
+        <div class="view_move_hidden_panel" id="vmhp_left"></div>
+        <div class="view_move_hidden_panel" id="vmhp_top"></div>
+        <div class="view_move_hidden_panel" id="vmhp_right"></div>
+        <div class="view_move_hidden_panel" id="vmhp_bottom"></div>
+
+        <!-- tranparent controll pannels -->
+        <div class="control_panel" id="new_simulation_panel">
+
+        </div>
+
+        <div class="control_panel" id="interract_panel">
+
+        </div>
+
+        <!-- post-load scripts -->
+        <script type="text/javascript" src="component_handler.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="simulator.js"></script>
+
+    </body>
+
+</html>

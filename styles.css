@@ -1,0 +1,52 @@
+*{
+    /* resets default settings */
+    margin: 0;
+    padding: 0; 
+
+    /* sets all positiong as absolute 
+    (this allows overlaying components over canvas) */
+    position: absolute;
+}
+
+/* Canvas / Game Area */
+#main_canvas{
+    background-color: black;
+}
+
+/* View Move Panels */
+.view_move_hidden_panel{
+    transition-duration: 600ms;
+    opacity: 0.0;
+    background-color: black;
+}
+
+.view_move_hidden_panel:hover{
+    opacity: 0.6;
+}
+
+/* Control Panels */
+.control_panel{
+    background-color: white;
+    opacity: 0.05;    
+    border-radius: 30px;
+    transition-duration: 600ms;
+}
+
+.control_panel:hover{
+    opacity: 0.6;
+    transform: scaleX(1.03);
+}
+
+#new_simulation_panel{
+    margin-left: 30px;
+    margin-top: 30px;
+    width: 200px;
+    height: 350px;
+}
+
+#interract_panel{
+    margin-left: 30px;
+    margin-top: 390px;
+    width: 200px;
+    height: 250px;
+}
