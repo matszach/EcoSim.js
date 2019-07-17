@@ -27,13 +27,13 @@
 /* Control Panels */
 .control_panel{
     background-color: white;
-    opacity: 0.05;    
+    opacity: 0.03;    
     border-radius: 30px;
-    transition-duration: 600ms;
+    transition-duration: 1000ms;
 }
 
 .control_panel:hover{
-    opacity: 0.6;
+    opacity: 0.3;
     transform: scaleX(1.03);
 }
 
