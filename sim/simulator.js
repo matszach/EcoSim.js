@@ -37,6 +37,10 @@ function growAndDrawPlats() {
                 if(v < PLANT_MAX_VALUE){
                     plantsMap[x][y] += PLANT_GROWTH_RATE;
                 }
+                // radius = v/PLANT_MAX_VALUE*0.72;
+                // CTX.beginPath();
+                // CTX.arc((ROOT_X+x+0.5)*UNIT, (ROOT_Y+y+0.5)*UNIT, radius*UNIT, 0, 2 * Math.PI);
+                // CTX.fill();
                 scale = v/PLANT_MAX_VALUE*1.2;
                 off = -scale/2 + 0.5
                 CTX.fillRect((ROOT_X+x+off)*UNIT,(ROOT_Y+y+off)*UNIT, scale*UNIT, scale*UNIT);
@@ -57,7 +61,14 @@ function growAndDrawPlats() {
 let animalsMap;
 
 function actAndDrawAnimals() {
-
+    for(x = 0; x < fieldsMap.length; x++){
+        for(y = 0; y < fieldsMap[x].length; y++){
+            if(animalsMap[x][y] != null){
+                animalsMap[x][y].doAct(x, y);
+                animalsMap[x][y].doDraw(x, y);
+            }
+        }
+    }
 }
 
 

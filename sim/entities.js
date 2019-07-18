@@ -1,51 +1,40 @@
-// Organism - parent class to all entities
-class Organism {
+class Animal{
 
+    // perform lifecycle logic
+    doAct(x, y){
+
+    }
+
+    // draw on canvas
     draw(x, y){
         CTX.fillStyle = this.color;
-        CTX.rect((ROOT_X + x) * UNIT, (ROOT_Y + y) * UNIT, UNIT, UNIT);
-        CTX.fill();
+        CTX.fillRect((ROOT_X + x) * UNIT, (ROOT_Y + y) * UNIT, UNIT, UNIT);
     }
 
-    constructor(color){
+    // constructor
+    constructor(color, speed, sight, urgeToBreed, breedThreshold, sex){
+
+        // draw color 
         this.color = color;
-    }
 
-}
+        // genome
+        this.speed = speed;
+        this.sight = sight;
+        this.urgeToBreed = urgeToBreed;
+        this.breedThreshold = breedThreshold;
+        this.sex = sex;
 
-class Animal extends Organism{
+        // needs
+        this.needHunger = 0;
+        this.needThrirst = 0;
+        this.needBreed = 0;
 
-    constructor(speed){
+        // upkeep costs 
+        this.upkeepHunger = this.speed * SPEED_HUNGER_COST + this.sight * SIGHT_HUNGER_COST;
+        this.upkeepThirst = this.speed * SPEED_THIRST_COST + this.sight * SIGHT_THIRST_COST;
+
         
     }
-    
-
 
 }
 
-/*
-
-state:
-need-to-feed - dead at 100
-need-to-hydrate - dead at 100
-need-to-breed - capped at 100
-
-every frame upkeep:
-food-upkeep - calculated on construct
-water-upkeep - calculated on construct
-
-speed - every how many frames the creature moves (values like 5.6 will cause alteranting wait times of 5 and 6 etc)
-sight - how far (in fields) the animal sees
-want-to-breed - how quickly the need to breed raises 
-breed-threshold - when needs to fee and hydrate are below this threshold, the animal igmores its need to breed
-
-
-*/
-
-/*
-
-speed, sight weights
-child costs,
-plant spawn chance
-
-*/

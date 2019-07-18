@@ -77,3 +77,13 @@ function doMoveView(){
 }
 
 setInterval(doMoveView, 30);
+
+function upScale(){
+    UNIT+=1;
+    fitToWindow();
+}
+
+function downScale(){
+    UNIT-=1;
+    fitToWindow();
+}
