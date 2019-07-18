@@ -76,4 +76,4 @@ function doMoveView(){
     }
 }
 
-setInterval(doMoveView, 50);
+setInterval(doMoveView, 30);

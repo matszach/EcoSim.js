@@ -1,4 +1,0 @@
-const GRID_COLOR = "#888888";
-const GRID_WIDTH = 0.2;
-
-const VMPH_THICKNESS = 50;

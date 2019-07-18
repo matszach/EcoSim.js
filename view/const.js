@@ -1,0 +1,12 @@
+const GRID_COLOR = "#555555";
+const GRID_WIDTH = 0.2;
+
+const VMPH_THICKNESS = 50;
+
+const GRASS_FIELD_COLOR = "#008800";
+const WATER_FIELD_COLOR = "#000088";
+const PLANT_COLOR = "#004400";
+const RABBIT_MALE_COLOR = "#779999";
+const RABBIT_FEMALE_COLOR = "#bb9999";
+const FOX_MALE_COLOR = "#bb8822";
+const FOX_FEMALE_COLOR = "#bb4422";
