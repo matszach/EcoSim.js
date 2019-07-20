@@ -28,25 +28,42 @@
 .control_panel{
     background-color: white;
     opacity: 0.03;    
+    padding: 5px;
     border-radius: 30px;
     transition-duration: 1000ms;
 }
 
 .control_panel:hover{
-    opacity: 0.3;
+    opacity: 0.5;
     transform: scaleX(1.03);
 }
 
 #new_simulation_panel{
-    margin-left: 30px;
-    margin-top: 30px;
+    margin-left: 55px;
+    margin-top: 35px;
     width: 200px;
     height: 350px;
 }
 
 #interract_panel{
-    margin-left: 30px;
-    margin-top: 390px;
+    margin-left: 55px;
+    margin-top: 400px;
     width: 200px;
     height: 250px;
+}
+
+/* controlls */
+.input{
+    margin: 5px;
+    position: static;
+}
+
+.slider{
+    width: 190px;
+    height: 20px;
+}
+
+.button_small{
+    width: 20px;
+    height: 20px;
 }

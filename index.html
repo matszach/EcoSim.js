@@ -13,6 +13,8 @@
         <script type="text/javascript" src="sim/entities.js"></script>
         <script type="text/javascript" src="sim/sim_variables.js"></script>
         <script type="text/javascript" src="sim/level_gen.js"></script>
+        <script type="text/javascript" src="sim/nearbyFieldIterator.js"></script>
+
 
     </head>
 
@@ -29,13 +31,14 @@
 
         <!-- tranparent controll pannels -->
         <div class="control_panel" id="new_simulation_panel">
-
+            <input class="input slider" type="range" id="ns_sld_width" min=10 max=500 value=200>
+            <input class="input slider" type="range" id="ns_sld_height" min=10 max=500 value=120>
+            <input class="input button_small" type="submit" value="new" 
+            onclick="doGenerate()">
         </div>
 
         <div class="control_panel" id="interract_panel">
-            <input type="submit" onclick="upScale()" value="+">
-            <br>
-            <input type="submit" onclick="downScale()" value="-">
+            <input class="input slider" type="range" id="scale_slider" min=1 max=96 value=24>
         </div>
 
         <!-- post-load scripts -->

@@ -7,6 +7,11 @@ const VMHP_TOP = document.getElementById("vmhp_top");
 const VMHP_RIGHT = document.getElementById("vmhp_right");
 const VMHP_BOTTOM = document.getElementById("vmhp_bottom");
 
+const NS_SLD_WIDTH = document.getElementById("ns_sld_width");
+const NS_SLD_HEIGHT = document.getElementById("ns_sld_height");
+
+const SLD_SCALE = document.getElementById("scale_slider");
+
 
 // fits canvas, and other componets to window
 function fitToWindow(){
@@ -66,24 +71,65 @@ VMHP_BOTTOM.onmouseleave = () => VMHP_BOTTOM.isMouseDown = false;
 // start a loop that will move view according to user's mouse positon
 function doMoveView(){
     if(VMHP_RIGHT.isMouseDown && ROOT_X > MIN_X) {
-        ROOT_X -= 1;
+        ROOT_X -= getScreenScrollDistance();
     } else if (VMHP_BOTTOM.isMouseDown && ROOT_Y > MIN_Y){
-        ROOT_Y -= 1;
+        ROOT_Y -= getScreenScrollDistance();
     } else if(VMHP_LEFT.isMouseDown && ROOT_X < MAX_X){
-        ROOT_X += 1;
+        ROOT_X += getScreenScrollDistance();
     } else if (VMHP_TOP.isMouseDown && ROOT_Y < MAX_Y){
-        ROOT_Y += 1;
+        ROOT_Y += getScreenScrollDistance();
     }
 }
 
-setInterval(doMoveView, 30);
-
-function upScale(){
-    UNIT+=1;
-    fitToWindow();
+function getScreenScrollDistance(){
+    return Math.ceil(24/UNIT);
 }
 
-function downScale(){
-    UNIT-=1;
-    fitToWindow();
+// scaling
+function doAdjustScale(){
+    curr_slider_value = parseInt(SLD_SCALE.value);
+    if(UNIT != curr_slider_value){
+        setScale(curr_slider_value);
+    }
 }
+
+function setScale(newUnitSize){
+
+    if(newUnitSize > MAX_UNIT_SIZE || newUnitSize < MIN_UNIT_SIZE){
+        return;
+    }
+
+    w = window.innerWidth;
+    wOld = w/2/UNIT;
+    wNew = w/2/newUnitSize;
+    ROOT_X -= Math.round(wOld - wNew);
+
+    h = window.innerHeight; 
+    hOld = h/2/UNIT;
+    hNew = h/2/newUnitSize;
+    ROOT_Y -= Math.round(hOld - hNew);
+
+    UNIT = newUnitSize;
+    SLD_SCALE.value = UNIT;
+}
+
+function setScaleByWheel(delta){
+    if(delta<0){
+        setScale(UNIT+SCROLL_SCALE_INCREMENT);
+    } else {
+        setScale(UNIT-SCROLL_SCALE_INCREMENT);
+    }
+}
+
+window.addEventListener('wheel', (e) => setScaleByWheel(e.deltaY));
+
+
+
+function doAdjustView(){
+    doMoveView();
+    doAdjustScale();
+}
+
+
+
+setInterval(doAdjustView, 35);

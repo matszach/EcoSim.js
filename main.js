@@ -6,11 +6,17 @@ function clearCanvas(){
 // draws unit grid
 function drawGrid(){
 
+    if(UNIT < MIN_UNIT_SIZE_FOR_GRID_DRAW && SHOULD_DRAW_GRID){
+        return;
+    }
+
+    gridWidth = UNIT/GRID_WIDTH_MOD;
+
     w = window.innerWidth;
     h = window.innerHeight;
 
     CTX.strokeStyle = GRID_COLOR;
-    CTX.lineWidth = GRID_WIDTH;
+    CTX.lineWidth = gridWidth;
     CTX.beginPath();
 
     for(i = 1; i < w/UNIT; i++) {

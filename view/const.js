@@ -1,5 +1,9 @@
-const GRID_COLOR = "#555555";
-const GRID_WIDTH = 0.2;
+const GRID_COLOR = "#444444";
+const GRID_WIDTH_MOD = 24;
+const MIN_UNIT_SIZE_FOR_GRID_DRAW = 8;
+
+const SCROLL_SCALE_INCREMENT = 1;
+const ROOT_VIEW_PADDING = 10;
 
 const VMPH_THICKNESS = 50;
 

@@ -1,11 +1,29 @@
+function doGenerate(){
+    width = parseInt(NS_SLD_WIDTH.value);
+    height = parseInt(NS_SLD_HEIGHT.value);
+    generateLevel(width, height, 0, 0, 50, 50, 50)
+}
 
 function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pond_size, plant_density){
 
     // adjusts min and max map scroll
-    MIN_X = -width + 10;
-    MIN_Y = -height + 10
-    MAX_X = width - 10
-    MAX_Y = height - 10
+    MIN_X = -width + ROOT_VIEW_PADDING;
+    MIN_Y = -height + ROOT_VIEW_PADDING;
+    MAX_X = width - ROOT_VIEW_PADDING;
+    MAX_Y = height - ROOT_VIEW_PADDING;
+
+    // adjust root X an Y 
+    if(ROOT_X > MAX_X) {
+        ROOT_X = MAX_X;
+    } else if(ROOT_X < MIN_X) {
+        ROOT_X = MIN_X;
+    }
+
+    if(ROOT_Y > MAX_Y) {
+        ROOT_Y = MAX_Y;
+    } else if(ROOT_Y < MIN_Y) {
+        ROOT_Y = MIN_Y;
+    }
     
     // initial array sizes
     fieldsMap = [];
@@ -61,9 +79,11 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pon
 }
 
 function generatePond(x, y, size) {
+
     if(size < 0){
         return;
     }
+
     if(fieldsMap[x][y] == 1){
         fieldsMap[x][y] = 2;
         if(Math.random() > 0.5){
