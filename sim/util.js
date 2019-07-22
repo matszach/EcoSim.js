@@ -1,4 +1,4 @@
-function isFieldLegal(x, y){
+function isFieldLegalForRabbit(x, y){
 
     // field is void
     if(fieldsMap[x][y] == 0){
@@ -25,5 +25,13 @@ function isFieldDeepWater(x, y){
             fieldsMap[x][y+1] == 2;
     } catch {
         return false;
+    }
+}
+
+function isFieldInLegalRange(x, y){
+    if(x < 0 || y < 0){
+        return false;
+    } else {
+        return x > fieldsMap.length - 1 || y > fieldsMap[0].length - 1;
     }
 }

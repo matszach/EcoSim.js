@@ -71,7 +71,7 @@ function actAndDrawAnimals() {
     }
 }
 
-generateLevel(300,180,50,0,50,50,100);
+generateLevel(300,180,1000,0,50,50,100);
 
 function runOneSimulationRound(){
     drawFiels();

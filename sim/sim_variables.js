@@ -24,3 +24,8 @@ var SPEED_DIV = 400;
 
 // max need level
 var MAX_NEED = 100;
+
+// feeding variables
+var WATER_DRUNK_PER_ACT = 20;
+var PLANT_EATEN_PER_ACT = 15;
+var MIN_PLANT_TO_CONSIDER = 10;

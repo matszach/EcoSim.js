@@ -18,6 +18,7 @@ class Animal{
         }
         this.draw(x, y);
     }
+    
 
     act(x, y){
         // to be overriden
@@ -87,77 +88,97 @@ class Animal{
     // draw this animal on canvas
     draw(x, y){
         CTX.fillStyle = this.color;
-        CTX.fillRect((ROOT_X + x) * UNIT, (ROOT_Y + y) * UNIT, UNIT, UNIT);
+        var off = (1 - this.drawSize)/2;
+        CTX.fillRect((ROOT_X + x + off) * UNIT, (ROOT_Y + y + off) * UNIT, UNIT*this.drawSize, UNIT*this.drawSize);
     }
 
     // movement 
-    canMoveLeft(x, y){
-        return isFieldLegal(x-1, y);
+    canMoveTo(x, y){
+        // should be ovveriden
     }
 
     moveLeft(x, y){
-        if(!this.canMoveLeft(x,y)){
+        if(!this.canMoveTo(x-1,y)){
             return false;
         }
         animalsMap[x][y] = null;
         animalsMap[x-1][y] = this;
+        this.postMove(x-1, y);
         return true;
     }
 
-    canMoveRight(x, y){
-        return isFieldLegal(x+1, y);
-    }
-
     moveRight(x, y){
-        if(!this.canMoveRight(x,y)){
+        if(!this.canMoveTo(x+1,y)){
             return false;
         }
         animalsMap[x][y] = null;
         animalsMap[x+1][y] = this;
+        this.postMove(x+1, y);
         return true;
     }
 
-    canMoveUp(x, y){
-        return isFieldLegal(x, y-1);
-    }
-
     moveUp(x, y){
-        if(!this.canMoveUp(x,y)){
+        if(!this.canMoveTo(x,y-1)){
             return false;
         }
         animalsMap[x][y] = null;
         animalsMap[x][y-1] = this;
+        this.postMove(x, y-1);
         return true;
     }
 
-    canMoveDown(x, y){
-        return isFieldLegal(x, y+1);
-    }
-
     moveDown(x, y){
-        if(!this.canMoveDown(x,y)){
+        if(!this.canMoveTo(x,y+1)){
             return false;
         }
         animalsMap[x][y] = null;
         animalsMap[x][y+1] = this;
+        this.postMove(x, y+1);
         return true;
     }
 
     moveRandom(x, y){
         var dir = Math.floor(Math.random() * 4);
         switch(dir){
-            case 0: this.moveLeft(x,y); break;
-            case 1: this.moveRight(x,y); break;
-            case 2: this.moveUp(x,y); break;
-            case 3: this.moveDown(x,y); break;
+            case 0: return this.moveLeft(x,y); 
+            case 1: return this.moveRight(x,y);
+            case 2: return this.moveUp(x,y); 
+            case 3: return this.moveDown(x,y);
+            default: return false;
         }
     }
 
-    // constructor
-    constructor(color, speed, sight, urgeToBreed, breedThreshold, sex){
+    moveToField(xCurr, yCurr, xTarg, yTarg){
+        var xDir = xCurr - xTarg;
+        var yDir = yCurr - yTarg;
+        if(Math.abs(xDir) > Math.abs(yDir)){
+            if(xDir > 0){
+                return this.moveLeft(xCurr, yCurr);
+            } else {
+                return this.moveRight(xCurr, yCurr);
+            }
+        } else {
+            if(yDir > 0){
+                return this.moveUp(xCurr, yCurr);
+            } else {
+                return this.moveDown(xCurr, yCurr);
+            }
+        }
 
-        // draw color 
+    }
+
+    // post move
+    postMove(x, y){
+        this.feed(x, y);
+        this.draw(x, y);
+    }
+
+    // constructor
+    constructor(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex){
+
+        // draw color and size
         this.color = color;
+        this.drawSize = drawSize;
 
         // genome
         this.speed = speed;
@@ -192,21 +213,48 @@ class Animal{
 
 class Rabbit extends Animal{
 
+    canMoveTo(x, y){
+        return isFieldLegalForRabbit(x, y);
+    }
+
     feed(x, y){
-        this.needHunger -= plantsMap[x][y];
-        plantsMap[x][y] = 0;
         if(fieldsMap[x][y] == 2){
-            this.needThrirst = 0;
+            this.needThrirst -= WATER_DRUNK_PER_ACT;
+            return;
         }
+        var amountEaten = plantsMap[x][y] > PLANT_EATEN_PER_ACT ? PLANT_EATEN_PER_ACT : plantsMap[x][y];
+        this.needHunger -= amountEaten;
+        plantsMap[x][y] -= amountEaten;
     }
 
     act(x, y){
-        this.moveRandom(x,y);
+        while(this.fieldIterator.hasNext()){
+            var field = this.fieldIterator.getNext();
+            var xTarg = field[0];
+            var yTarg = field[1];
+
+            let foodAtField; 
+            try {
+                foodAtField = plantsMap[xTarg][yTarg];
+            } catch {
+                continue;
+            }
+
+            if(foodAtField > MIN_PLANT_TO_CONSIDER){
+                // if move to field fails -> move randomly
+                if(!this.moveToField(x, y, xTarg, yTarg)){
+                    this.moveRandom(x, y);
+                }
+                return;
+            }
+        }
+        this.moveRandom(x, y);
     }
     
     constructor(speed, sight, urgeToBreed, breedThreshold, sex){
         var color = sex == 0 ? RABBIT_MALE_COLOR : RABBIT_FEMALE_COLOR;
-        super(color, speed, sight, urgeToBreed, breedThreshold, sex);
+        var drawSize = sex == 0 ? RABBIT_MALE_DRAW_SIZE : RABBIT_FEMALE_DRAW_SIZE;
+        super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex);
     }
 }
 
