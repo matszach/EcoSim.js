@@ -63,17 +63,33 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pon
     }
 
     // generate ponds
+
     while(nof_ponds > 0){
-        x = Math.round(Math.random()*width);
-        y = Math.round(Math.random()*height);
-        if(fieldsMap[x][y] == 1){
-            generatePond(x, y, avg_pond_size);
+        try { 
+            x = Math.round(Math.random()*width);
+            y = Math.round(Math.random()*height);
+            if(fieldsMap[x][y] == 1){
+                generatePond(x, y, avg_pond_size);
+            }
+            nof_ponds -= 1;
+        } catch {
+
         }
-        nof_ponds -= 1;
     }
     fillGapsInPonds(width, height, 2);
     fillGapsInPonds(width, height, 3);
     fillGapsInPonds(width, height, 4);
+   
+
+    // generate animals
+    while(nof_rabbits > 0){
+        x = Math.round(Math.random()*width);
+        y = Math.round(Math.random()*height);
+        if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
+            animalsMap[x][y] = new Rabbit(50,50,50,50,nof_rabbits%2);
+            nof_rabbits -= 1;
+        }
+    }
 
 
 }

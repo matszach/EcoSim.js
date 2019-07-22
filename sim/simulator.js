@@ -60,15 +60,14 @@ function actAndDrawAnimals() {
     for(x = 0; x < fieldsMap.length; x++){
         for(y = 0; y < fieldsMap[x].length; y++){
             if(animalsMap[x][y] != null){
-                animalsMap[x][y].doAct(x, y);
+                // animalsMap[x][y].doAct(x, y);
                 animalsMap[x][y].doDraw(x, y);
             }
         }
     }
 }
 
-
-generateLevel(300,180,0,0,50,50,100);
+generateLevel(300,180,50,0,50,50,100);
 
 function runOneSimulationRound(){
     drawFiels();

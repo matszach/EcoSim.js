@@ -21,6 +21,10 @@ class Animal{
         // to be overriden
     }
 
+    feed(x, y){
+        // to be overriden
+    }
+
     breed(mate, x, y){
 
         // appy costs
@@ -77,6 +81,49 @@ class Animal{
         this.isAlive = false;
     }
 
+    move(animalsMap,currX,currY,newX,newY){
+        animalsMap[newX][newY] = animalsMap[currX][currY];
+        animalsMap[currX][currY] = null;
+    }
+
+    moveInDir(currX,currY,targetX,targetY){
+        
+        // TEMP TODO
+        var dX = currX > targetX;
+        var dY = currY > targetY;
+        var coin = Math.random() > 0.5;
+    
+        if(dX){
+            if(dY){
+                if(coin){
+                    this.move(currX,currY,currX-1,currY);
+                } else {
+                    this.move(currX,currY,currX,currY-1);
+                }
+            } else {
+                if(coin){
+                    this.move(currX,currY,currX-1,currY);
+                } else {
+                    this.move(currX,currY,currX,currY+1);
+                }
+            }
+        } else {
+            if(dY){
+                if(coin){
+                    this.move(currX,currY,currX+1,currY);
+                } else {
+                    this.move(currX,currY,currX,currY-1);
+                }
+            } else {
+                if(coin){
+                    this.move(currX,currY,currX+1,currY);
+                } else {
+                    this.move(currX,currY,currX,currY+1);
+                }
+            }
+        }
+    }
+
     // draw on canvas
     doDraw(x, y){
         CTX.fillStyle = this.color;
@@ -103,7 +150,7 @@ class Animal{
 
         // upkeep costs 
         this.upkeepHunger = this.speed * SPEED_HUNGER_COST + this.sight * SIGHT_HUNGER_COST;
-        this.upkeepThirst = this.speed * SPEED_THIRST_COST + this.sight * SIGHT_THIRST_COST;
+        this.upkeepThirst = this.speed * SPEED_THRIST_COST + this.sight * SIGHT_THRIST_COST;
 
         // delays 
         this.actDelayMax = this.calculateDelay();
@@ -122,24 +169,60 @@ class Animal{
 
 class Rabbit extends Animal{
 
+    feed(x, y){
+        // TEMP TODO
+        this.needHunger -= plantsMap[x][y];
+        plantsMap[x][y] = 0;
+        if(fieldsMap[x][y] == 2){
+            this.needThrirst = 0;
+        }
+    }
+
     act(x, y){
-        // todo
+
+        this.feed(x, y);
+
+        while(this.fieldIterator.hasNext()){
+            var f = this.fieldIterator.getNext();
+            var x = f[0];
+            var y = f[1];
+            if(plantsMap[f[0]][f[1]] > 0){
+                this.moveInDir(this.x, this.y, x, y);
+                return;
+            }
+        }
+        
+        var rand = Math.random();
+
+        if(rand > 0.75){
+            this.move(x,y,x+1,y);
+        } else if(rand > 0.5){
+            this.move(x,y,x-1,y);
+        } else if(rand > 0.25){
+            this.move(x,y,x,y+1);
+        } else {
+            this.move(x,y,x,y-1);
+        }
     }
     
     constructor(speed, sight, urgeToBreed, breedThreshold, sex){
-        color = RABBIT_MALE_COLOR ? sex == 0 : RABBIT_FEMALE_COLOR;
+        var color = sex == 0 ? RABBIT_MALE_COLOR : RABBIT_FEMALE_COLOR;
         super(color, speed, sight, urgeToBreed, breedThreshold, sex);
     }
 }
 
 class Fox extends Animal{
 
+    feed(x, y){
+        // to be overriden
+    }
+
     act(x, y){
         // todo
     }
 
     constructor(speed, sight, urgeToBreed, breedThreshold, sex){
-        color = FOX_MALE_COLOR ? sex == 0 : FOX_FEMALE_COLOR;
+        var color = sex == 0 ? FOX_MALE_COLOR : FOX_FEMALE_COLOR;
         super(color, speed, sight, urgeToBreed, breedThreshold, sex);
     }
 }
