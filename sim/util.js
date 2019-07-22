@@ -1,7 +1,10 @@
 function isFieldLegalForRabbit(x, y){
 
+    // field does not exist
+    if(isFieldOutOfBounds(x,y)){
+        return false;
     // field is void
-    if(fieldsMap[x][y] == 0){
+    } else if(fieldsMap[x][y] == 0){
         return false;
     // field is occupied
     } else if(animalsMap[x][y] != null){
@@ -28,7 +31,7 @@ function isFieldDeepWater(x, y){
     }
 }
 
-function isFieldInLegalRange(x, y){
+function isFieldOutOfBounds(x, y){
     if(x < 0 || y < 0){
         return false;
     } else {

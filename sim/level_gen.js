@@ -1,7 +1,8 @@
 function doGenerate(){
     width = parseInt(NS_SLD_WIDTH.value);
     height = parseInt(NS_SLD_HEIGHT.value);
-    generateLevel(width, height, 0, 0, 50, 50, 50)
+    nof_rabbits = parseInt(NS_SLD_RABBITS.value);
+    generateLevel(width, height, nof_rabbits, 0, 50, 50, 50)
 }
 
 function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pond_size, plant_density){

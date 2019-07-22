@@ -9,6 +9,7 @@ const VMHP_BOTTOM = document.getElementById("vmhp_bottom");
 
 const NS_SLD_WIDTH = document.getElementById("ns_sld_width");
 const NS_SLD_HEIGHT = document.getElementById("ns_sld_height");
+const NS_SLD_RABBITS = document.getElementById("ns_sld_rabbits");
 
 const SLD_SCALE = document.getElementById("scale_slider");
 
