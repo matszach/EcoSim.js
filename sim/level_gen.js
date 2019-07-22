@@ -65,15 +65,18 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pon
     // generate ponds
 
     while(nof_ponds > 0){
+
+      
         try { 
-            x = Math.round(Math.random()*width);
-            y = Math.round(Math.random()*height);
+            x = Math.floor(Math.random()*width);
+            y = Math.floor(Math.random()*height);
             if(fieldsMap[x][y] == 1){
                 generatePond(x, y, avg_pond_size);
             }
             nof_ponds -= 1;
         } catch {
-
+            // it's quicker to catch an exception here rather than check for out of bounds
+            // in generatePond()
         }
     }
     fillGapsInPonds(width, height, 2);
@@ -83,8 +86,8 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pon
 
     // generate animals
     while(nof_rabbits > 0){
-        x = Math.round(Math.random()*width);
-        y = Math.round(Math.random()*height);
+        x = Math.floor(Math.random()*width);
+        y = Math.floor(Math.random()*height);
         if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
             animalsMap[x][y] = new Rabbit(50,50,50,50,nof_rabbits%2);
             nof_rabbits -= 1;

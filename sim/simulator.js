@@ -60,8 +60,12 @@ function actAndDrawAnimals() {
     for(x = 0; x < fieldsMap.length; x++){
         for(y = 0; y < fieldsMap[x].length; y++){
             if(animalsMap[x][y] != null){
-                // animalsMap[x][y].doAct(x, y);
-                animalsMap[x][y].doDraw(x, y);
+                if (!animalsMap[x][y].isAlive){
+                    animalsMap[x][y] = null;
+                } else {
+                    animalsMap[x][y].doActAndDraw(x, y);
+                }
+
             }
         }
     }

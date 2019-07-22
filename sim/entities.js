@@ -6,15 +6,17 @@ class Animal{
     }
 
     // perform lifecycle logic
-    doAct(x, y){
+    doActAndDraw(x, y){
         this.manageNeeds();
         if(this.actDelayCurr < 0){
             this.fieldIterator.reset(x, y);
             this.act(x, y);
+            this.feed(x, y);
             this.actDelayCurr = this.actDelayMax;
         } else {    
             this.actDelayCurr -= 1;
         }
+        this.draw(x, y);
     }
 
     act(x, y){
@@ -81,53 +83,74 @@ class Animal{
         this.isAlive = false;
     }
 
-    move(animalsMap,currX,currY,newX,newY){
-        animalsMap[newX][newY] = animalsMap[currX][currY];
-        animalsMap[currX][currY] = null;
-    }
 
-    moveInDir(currX,currY,targetX,targetY){
-        
-        // TEMP TODO
-        var dX = currX > targetX;
-        var dY = currY > targetY;
-        var coin = Math.random() > 0.5;
-    
-        if(dX){
-            if(dY){
-                if(coin){
-                    this.move(currX,currY,currX-1,currY);
-                } else {
-                    this.move(currX,currY,currX,currY-1);
-                }
-            } else {
-                if(coin){
-                    this.move(currX,currY,currX-1,currY);
-                } else {
-                    this.move(currX,currY,currX,currY+1);
-                }
-            }
-        } else {
-            if(dY){
-                if(coin){
-                    this.move(currX,currY,currX+1,currY);
-                } else {
-                    this.move(currX,currY,currX,currY-1);
-                }
-            } else {
-                if(coin){
-                    this.move(currX,currY,currX+1,currY);
-                } else {
-                    this.move(currX,currY,currX,currY+1);
-                }
-            }
-        }
-    }
-
-    // draw on canvas
-    doDraw(x, y){
+    // draw this animal on canvas
+    draw(x, y){
         CTX.fillStyle = this.color;
         CTX.fillRect((ROOT_X + x) * UNIT, (ROOT_Y + y) * UNIT, UNIT, UNIT);
+    }
+
+    // movement 
+    canMoveLeft(x, y){
+        return isFieldLegal(x-1, y);
+    }
+
+    moveLeft(x, y){
+        if(!this.canMoveLeft(x,y)){
+            return false;
+        }
+        animalsMap[x][y] = null;
+        animalsMap[x-1][y] = this;
+        return true;
+    }
+
+    canMoveRight(x, y){
+        return isFieldLegal(x+1, y);
+    }
+
+    moveRight(x, y){
+        if(!this.canMoveRight(x,y)){
+            return false;
+        }
+        animalsMap[x][y] = null;
+        animalsMap[x+1][y] = this;
+        return true;
+    }
+
+    canMoveUp(x, y){
+        return isFieldLegal(x, y-1);
+    }
+
+    moveUp(x, y){
+        if(!this.canMoveUp(x,y)){
+            return false;
+        }
+        animalsMap[x][y] = null;
+        animalsMap[x][y-1] = this;
+        return true;
+    }
+
+    canMoveDown(x, y){
+        return isFieldLegal(x, y+1);
+    }
+
+    moveDown(x, y){
+        if(!this.canMoveDown(x,y)){
+            return false;
+        }
+        animalsMap[x][y] = null;
+        animalsMap[x][y+1] = this;
+        return true;
+    }
+
+    moveRandom(x, y){
+        var dir = Math.floor(Math.random() * 4);
+        switch(dir){
+            case 0: this.moveLeft(x,y); break;
+            case 1: this.moveRight(x,y); break;
+            case 2: this.moveUp(x,y); break;
+            case 3: this.moveDown(x,y); break;
+        }
     }
 
     // constructor
@@ -154,7 +177,7 @@ class Animal{
 
         // delays 
         this.actDelayMax = this.calculateDelay();
-        this.actDelayCurr = this.actDelayMax;
+        this.actDelayCurr = this.actDelayMax - Math.floor(Math.random()*this.actDelayMax);
 
         // alive
         this.isAlive = true;
@@ -170,7 +193,6 @@ class Animal{
 class Rabbit extends Animal{
 
     feed(x, y){
-        // TEMP TODO
         this.needHunger -= plantsMap[x][y];
         plantsMap[x][y] = 0;
         if(fieldsMap[x][y] == 2){
@@ -179,30 +201,7 @@ class Rabbit extends Animal{
     }
 
     act(x, y){
-
-        this.feed(x, y);
-
-        while(this.fieldIterator.hasNext()){
-            var f = this.fieldIterator.getNext();
-            var x = f[0];
-            var y = f[1];
-            if(plantsMap[f[0]][f[1]] > 0){
-                this.moveInDir(this.x, this.y, x, y);
-                return;
-            }
-        }
-        
-        var rand = Math.random();
-
-        if(rand > 0.75){
-            this.move(x,y,x+1,y);
-        } else if(rand > 0.5){
-            this.move(x,y,x-1,y);
-        } else if(rand > 0.25){
-            this.move(x,y,x,y+1);
-        } else {
-            this.move(x,y,x,y-1);
-        }
+        this.moveRandom(x,y);
     }
     
     constructor(speed, sight, urgeToBreed, breedThreshold, sex){
