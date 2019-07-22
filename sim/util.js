@@ -4,7 +4,7 @@ function isFieldLegalForRabbit(x, y){
     if(fieldsMap[x][y] == 0){
         return false;
     // field is occupied
-    } else if(animalsMap[x][y] == 0){
+    } else if(animalsMap[x][y] != null){
         return false;
     // field is water and is sorrounded by water 
     } else if (isFieldDeepWater(x, y)){
