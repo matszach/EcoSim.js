@@ -1,5 +1,6 @@
 class Animal{
 
+    // =========================================== MAIN =====================================
     // delay between inner act() calls
     calculateDelay(){
         return SPEED_DIV/this.speed + SPEED_BASE;
@@ -27,31 +28,51 @@ class Animal{
         // to be overriden
     }
 
+    // =========================================== BREEDING =====================================
     breed(mate, x, y){
 
-        // appy costs
-        this.needHunger += CHILD_HUNGER_COST;
-        this.needThrirst += CHILD_THIRST_COST;
-        this.needBreed -= CHILD_SATISFACTION;
+        // iterator reset
+        this.fieldIterator.reset(x. y);
 
-        // calculate attributes of the child
-        osSpeed = (this.speed + mate.speed)/2 * this.calcMutation();
-        osSight = (this.sight + mate.sight)/2 * this.calcMutation();
-        osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
-        osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
-        osSex = 0 ? Math.random() > 0.5 : 1; 
+        while(this.fieldIterator.hasNext()){
 
-        // create the child
-        offspringAnimal = this.constructor(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex);
-        
-        // place the offspring on a nearby empty field
-            // todo
+            // retrieve checked field
+            var fld = this.fieldIterator.getNext();
+            osX = fld[0];
+            osY = fld[1];
+            
+            // a legal field is found
+            if(isFieldLegalForRabbit(osX, osY)){
+
+                // appy costs
+                this.needHunger += CHILD_HUNGER_COST;
+                this.needThrirst += CHILD_THIRST_COST;
+                this.needBreed -= CHILD_SATISFACTION;
+
+                // calculate attributes of the child
+                osSpeed = (this.speed + mate.speed)/2 * this.calcMutation();
+                osSight = (this.sight + mate.sight)/2 * this.calcMutation();
+                osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
+                osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
+                osSex = 0 ? Math.random() > 0.5 : 1; 
+
+                // create the child
+                offspringAnimal = this.constructor(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex);
+
+                // place the offspring on a nearby empty field
+                animalsMap[osX][osY] = offspringAnimal;
+                return true;
+
+            }
+        }
+        return false;
     }
 
     static calcMutation(){
         return (1 + (Math.random() - 0.5) * MUTATION_LEVEL);
     }
 
+    // =========================================== NEEDS =====================================
     manageNeeds(){
 
         // apply upkeep
@@ -79,9 +100,27 @@ class Animal{
         
     }
 
+
+    static HUNGER_NEED_ID = 0;
+    static THIRST_NEED_ID = 1;
+    static BREEDING_NEED_ID = 2;
+
+    getTopNeed(){
+        if(this.needBreed > this.needHunger &&
+            this.needBreed > this.needThrirst &&
+            this.needHunger < this.breedThreshold &&
+            this.needThrirst < this.breedThreshold){
+            return BREEDING_NEED_ID;
+        } else if (this.needHunger > this.needThrirst){
+            return HUNGER_NEED_ID;
+        } else {
+            return THIRST_NEED_ID;
+        }
+    }
+
+    // =========================================== MISC =====================================
     die(){
         this.isAlive = false;
-        console.log('An animal dies.');
     }
 
 
@@ -92,7 +131,7 @@ class Animal{
         CTX.fillRect((ROOT_X + x + off) * UNIT, (ROOT_Y + y + off) * UNIT, UNIT*this.drawSize, UNIT*this.drawSize);
     }
 
-    // movement 
+    // =========================================== MOVEMENT =====================================
     canMoveTo(x, y){
         // should be ovveriden
     }
@@ -232,7 +271,7 @@ class Rabbit extends Animal{
     }
 
     act(x, y){
-
+        
         // food is a priority if ...
         if(this.needHunger > this.needThrirst){
 
