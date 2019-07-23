@@ -2,10 +2,14 @@ function doGenerate(){
     width = parseInt(NS_SLD_WIDTH.value);
     height = parseInt(NS_SLD_HEIGHT.value);
     nof_rabbits = parseInt(NS_SLD_RABBITS.value);
-    generateLevel(width, height, nof_rabbits, 0, 50, 50, 50)
+    nof_foxes = 0;
+    nof_ponds = parseInt(NS_SLD_NOF_PONDS.value);
+    pond_size = parseInt(NS_SLD_POND_SIZE.value);
+    plant_density = parseInt(NS_SLD_PLANT_DENSITY.value)/100
+    generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_size, plant_density)
 }
 
-function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pond_size, plant_density){
+function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_size, plant_density){
 
     // adjusts min and max map scroll
     MIN_X = -width + ROOT_VIEW_PADDING;
@@ -64,15 +68,13 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pon
     }
 
     // generate ponds
-
     while(nof_ponds > 0){
 
-      
         try { 
             x = Math.floor(Math.random()*width);
             y = Math.floor(Math.random()*height);
             if(fieldsMap[x][y] == 1){
-                generatePond(x, y, avg_pond_size);
+                generatePond(x, y, pond_size);
             }
             nof_ponds -= 1;
         } catch {
@@ -83,6 +85,15 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, avg_pon
     fillGapsInPonds(width, height, 2);
     fillGapsInPonds(width, height, 3);
     fillGapsInPonds(width, height, 4);
+
+    // generate plants
+    for(x = 0; x < width; x++){
+        for(y = 0; y < height; y++){
+            if(fieldsMap[x][y] == 1 && Math.random() < plant_density){
+                    plantsMap[x][y] = Math.round(Math.random()*PLANT_MAX_VALUE);
+            }
+        }
+    }
    
 
     // generate animals

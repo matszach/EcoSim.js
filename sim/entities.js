@@ -11,12 +11,11 @@ class Animal{
         if(this.actDelayCurr < 0){
             this.fieldIterator.reset(x, y);
             this.act(x, y);
-            this.feed(x, y);
             this.actDelayCurr = this.actDelayMax;
         } else {    
             this.actDelayCurr -= 1;
+            this.draw(x, y);
         }
-        this.draw(x, y);
     }
     
 
@@ -70,18 +69,19 @@ class Animal{
         }
 
         // slice/die if above max
-        if(this.needBreed > MAX_NEED){
-            this.needBreed = MAX_NEED;
-        } else if(this.needThrirst > MAX_NEED){
+        if(this.needThrirst > MAX_NEED){
             this.die();
         } else if(this.needHunger > MAX_NEED){
             this.die();            
+        } else if(this.needBreed > MAX_NEED){
+            this.needBreed = MAX_NEED;
         }
         
     }
 
     die(){
         this.isAlive = false;
+        console.log('An animal dies.');
     }
 
 
@@ -167,10 +167,14 @@ class Animal{
 
     }
 
+    stayHere(x, y){
+        this.postMove(x, y);
+    }
+
     // post move
     postMove(x, y){
         this.feed(x, y);
-        this.draw(x, y);
+        this.draw(x. y);
     }
 
     // constructor
@@ -228,26 +232,78 @@ class Rabbit extends Animal{
     }
 
     act(x, y){
-        while(this.fieldIterator.hasNext()){
-            var field = this.fieldIterator.getNext();
-            var xTarg = field[0];
-            var yTarg = field[1];
 
-            let foodAtField; 
-            try {
-                foodAtField = plantsMap[xTarg][yTarg];
-            } catch {
-                continue;
-            }
+        // food is a priority if ...
+        if(this.needHunger > this.needThrirst){
 
-            if(foodAtField > MIN_PLANT_TO_CONSIDER){
-                // if move to field fails -> move randomly
-                if(!this.moveToField(x, y, xTarg, yTarg)){
-                    this.moveRandom(x, y);
-                }
+            // if there's sufficieng food left to warrant staying - stay
+            if(plantsMap[x][y] > MIN_PLANT_TO_CONSIDER){
+                this.stayHere(x,y);
                 return;
             }
+            
+            // use iterator to look for food
+            while(this.fieldIterator.hasNext()){
+                var field = this.fieldIterator.getNext();
+                var xTarg = field[0];
+                var yTarg = field[1];
+
+                let foodAtField; 
+                try {
+                    foodAtField = plantsMap[xTarg][yTarg];
+                } catch {
+                    continue;
+                }
+
+                if(foodAtField > MIN_PLANT_TO_CONSIDER){
+                    // if move to field fails -> move randomly -> stay;
+                    if(!this.moveToField(x, y, xTarg, yTarg)){
+                        if(!this.moveRandom(x, y)){
+                            this.stayHere(x, y);
+                        }
+                    }
+                    return;
+                }
+            }
+
+        // water is a priority if ...
+        } else {
+
+            // if there's water here - stay
+            if(fieldsMap[x][y] == 2){
+                this.stayHere(x,y);
+                return;
+            }
+            
+            // use iterator to look for food
+            while(this.fieldIterator.hasNext()){
+                var field = this.fieldIterator.getNext();
+                var xTarg = field[0];
+                var yTarg = field[1];
+
+                let fieldIsWater; 
+                try {
+                    fieldIsWater = plantsMap[xTarg][yTarg] == 2
+                } catch {
+                    continue;
+                }
+
+                if(fieldIsWater){
+                    // if move to field fails -> move randomly -> stay;
+                    if(!this.moveToField(x, y, xTarg, yTarg)){
+                        if(!this.moveRandom(x, y)){
+                            this.stayHere(x, y);
+                        }
+                    }
+                    return;
+                }
+            }
+
         }
+        
+        
+
+        // if no clear result is reached by this point - move randomly
         this.moveRandom(x, y);
     }
     
@@ -271,5 +327,6 @@ class Fox extends Animal{
     constructor(speed, sight, urgeToBreed, breedThreshold, sex){
         var color = sex == 0 ? FOX_MALE_COLOR : FOX_FEMALE_COLOR;
         super(color, speed, sight, urgeToBreed, breedThreshold, sex);
+
     }
 }
