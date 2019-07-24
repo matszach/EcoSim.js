@@ -24,54 +24,141 @@ class Animal{
         // to be overriden
     }
 
+
+    // =========================================== FEEDING =====================================
     feed(x, y){
         // to be overriden
+    }
+
+    lookForPlants(x, y){
+
+        // if there's sufficieng food left to warrant staying - stay
+        if(plantsMap[x][y] > MIN_PLANT_TO_CONSIDER){
+            return;
+        }
+
+        // use iterator to look for food
+        while(this.fieldIterator.hasNext()){
+            var field = this.fieldIterator.getNext();
+            var xTarg = field[0];
+            var yTarg = field[1];
+
+            let foodAtField; 
+            try {
+                foodAtField = plantsMap[xTarg][yTarg];
+            } catch {
+                continue;
+            }
+
+            if(foodAtField > MIN_PLANT_TO_CONSIDER){
+                // if move to field fails -> move randomly -> stay;
+                if(!this.moveToField(x, y, xTarg, yTarg)){
+                    this.moveRandom(x, y);
+                }
+                return;
+            }
+        }
+        this.moveRandom(x, y);
+    }
+
+    lookForWater(x, y){
+
+        // if there's water here - stay
+        if(fieldsMap[x][y] == WATER_FIELD_ID){
+            return;
+        }
+        
+        // use iterator to look for food
+        while(this.fieldIterator.hasNext()){
+            var field = this.fieldIterator.getNext();
+            var xTarg = field[0];
+            var yTarg = field[1];
+
+            let fieldIsWater; 
+            try {
+                fieldIsWater = fieldsMap[xTarg][yTarg] == WATER_FIELD_ID;
+            } catch {
+                continue;
+            }
+            
+            if(fieldIsWater){
+                // if move to field fails -> move randomly -> stay;
+                if(!this.moveToField(x, y, xTarg, yTarg)){
+                    this.moveRandom(x, y);
+                }
+                return;
+            }
+        }
+        this.moveRandom(x,y);
     }
 
     // =========================================== BREEDING =====================================
     breed(mate, x, y){
 
         // iterator reset
-        this.fieldIterator.reset(x. y);
+        this.fieldIterator.reset(x, y);
 
         while(this.fieldIterator.hasNext()){
 
             // retrieve checked field
             var fld = this.fieldIterator.getNext();
-            osX = fld[0];
-            osY = fld[1];
+            var osX = fld[0];
+            var osY = fld[1];
             
             // a legal field is found
             if(isFieldLegalForRabbit(osX, osY)){
 
-                // appy costs
-                this.needHunger += CHILD_HUNGER_COST;
-                this.needThrirst += CHILD_THIRST_COST;
-                this.needBreed -= CHILD_SATISFACTION;
-
-                // calculate attributes of the child
-                osSpeed = (this.speed + mate.speed)/2 * this.calcMutation();
-                osSight = (this.sight + mate.sight)/2 * this.calcMutation();
-                osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
-                osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
-                osSex = 0 ? Math.random() > 0.5 : 1; 
-
-                // create the child
-                offspringAnimal = this.constructor(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex);
-
                 // place the offspring on a nearby empty field
-                animalsMap[osX][osY] = offspringAnimal;
+                animalsMap[osX][osY] = this.buildOffspring(mate);
+
                 return true;
 
             }
         }
-        return false;
+        return false
     }
 
-    static calcMutation(){
+    tryNearbyFieldsForMates(x, y){
+        if(this.tryFieldForMate(x, y+1)){
+            return true;
+        } else if (this.tryFieldForMate(x, y-1)){
+            return true;
+        } else if (this.tryFieldForMate(x-1, y)){
+            return true;
+        } else if (this.tryFieldForMate(x+1, y)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    tryFieldForMate(xF, yF){
+        try {
+            if(animalsMap[xF][yF].sex != this.sex && typeof animalsMap[xF][yF] == typeof this){
+                return this.breed(animalsMap[xF][yF], xF, yF);
+            } else {
+                return false;
+            }
+        } catch {
+            return false;
+        }
+    }
+
+    calcMutation(){
         return (1 + (Math.random() - 0.5) * MUTATION_LEVEL);
     }
 
+    lookForMate(x, y){
+        // if there's a viable mate nearby - stay
+        if(this.tryNearbyFieldsForMates(x, y)){
+            return;
+        }
+        this.moveRandom(x, y);
+    }
+
+    buildOffspring(mate){
+        return null;
+    }
     // =========================================== NEEDS =====================================
     manageNeeds(){
 
@@ -99,11 +186,6 @@ class Animal{
         }
         
     }
-
-
-    static HUNGER_NEED_ID = 0;
-    static THIRST_NEED_ID = 1;
-    static BREEDING_NEED_ID = 2;
 
     getTopNeed(){
         if(this.needBreed > this.needHunger &&
@@ -142,7 +224,6 @@ class Animal{
         }
         animalsMap[x][y] = null;
         animalsMap[x-1][y] = this;
-        this.postMove(x-1, y);
         return true;
     }
 
@@ -152,7 +233,6 @@ class Animal{
         }
         animalsMap[x][y] = null;
         animalsMap[x+1][y] = this;
-        this.postMove(x+1, y);
         return true;
     }
 
@@ -162,7 +242,6 @@ class Animal{
         }
         animalsMap[x][y] = null;
         animalsMap[x][y-1] = this;
-        this.postMove(x, y-1);
         return true;
     }
 
@@ -172,7 +251,6 @@ class Animal{
         }
         animalsMap[x][y] = null;
         animalsMap[x][y+1] = this;
-        this.postMove(x, y+1);
         return true;
     }
 
@@ -204,10 +282,6 @@ class Animal{
             }
         }
 
-    }
-
-    stayHere(x, y){
-        this.postMove(x, y);
     }
 
     // post move
@@ -261,7 +335,7 @@ class Rabbit extends Animal{
     }
 
     feed(x, y){
-        if(fieldsMap[x][y] == 2){
+        if(fieldsMap[x][y] == WATER_FIELD_ID){
             this.needThrirst -= WATER_DRUNK_PER_ACT;
             return;
         }
@@ -271,79 +345,37 @@ class Rabbit extends Animal{
     }
 
     act(x, y){
-        
-        // food is a priority if ...
-        if(this.needHunger > this.needThrirst){
-
-            // if there's sufficieng food left to warrant staying - stay
-            if(plantsMap[x][y] > MIN_PLANT_TO_CONSIDER){
-                this.stayHere(x,y);
-                return;
-            }
-            
-            // use iterator to look for food
-            while(this.fieldIterator.hasNext()){
-                var field = this.fieldIterator.getNext();
-                var xTarg = field[0];
-                var yTarg = field[1];
-
-                let foodAtField; 
-                try {
-                    foodAtField = plantsMap[xTarg][yTarg];
-                } catch {
-                    continue;
-                }
-
-                if(foodAtField > MIN_PLANT_TO_CONSIDER){
-                    // if move to field fails -> move randomly -> stay;
-                    if(!this.moveToField(x, y, xTarg, yTarg)){
-                        if(!this.moveRandom(x, y)){
-                            this.stayHere(x, y);
-                        }
-                    }
-                    return;
-                }
-            }
-
-        // water is a priority if ...
-        } else {
-
-            // if there's water here - stay
-            if(fieldsMap[x][y] == 2){
-                this.stayHere(x,y);
-                return;
-            }
-            
-            // use iterator to look for food
-            while(this.fieldIterator.hasNext()){
-                var field = this.fieldIterator.getNext();
-                var xTarg = field[0];
-                var yTarg = field[1];
-
-                let fieldIsWater; 
-                try {
-                    fieldIsWater = plantsMap[xTarg][yTarg] == 2
-                } catch {
-                    continue;
-                }
-
-                if(fieldIsWater){
-                    // if move to field fails -> move randomly -> stay;
-                    if(!this.moveToField(x, y, xTarg, yTarg)){
-                        if(!this.moveRandom(x, y)){
-                            this.stayHere(x, y);
-                        }
-                    }
-                    return;
-                }
-            }
-
+        switch(this.getTopNeed()){
+            case HUNGER_NEED_ID : this.lookForPlants(x, y); break;
+            case THIRST_NEED_ID : this.lookForWater(x, y); break;
+            case BREEDING_NEED_ID : this.lookForMate(x, y); break;
+            default : this.moveRandom(x, y);
         }
-        
-        
+    }
 
-        // if no clear result is reached by this point - move randomly
-        this.moveRandom(x, y);
+    buildOffspring(mate){
+
+        // apply costs
+        this.needHunger += CHILD_HUNGER_COST;
+        this.needThrirst += CHILD_THIRST_COST;
+        this.needBreed -= CHILD_SATISFACTION;
+
+        // calculate attributes of the child
+        var osSpeed = (this.speed + mate.speed)/2 * this.calcMutation();
+        var osSight = (this.sight + mate.sight)/2 * this.calcMutation();
+        var osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
+        var osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
+        var osSex = Math.random() > 0.5 ? 0 : 1; 
+
+        // create the child
+        console.log('A new Rabbit is born.')
+        return new Rabbit(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex);
+
+    }
+
+    die(){
+        super.die();
+        console.log('A Rabbit dies.')
     }
     
     constructor(speed, sight, urgeToBreed, breedThreshold, sex){

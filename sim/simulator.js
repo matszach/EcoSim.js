@@ -69,6 +69,14 @@ function actAndDrawAnimals() {
             }
         }
     }
+
+    for(x = 0; x < fieldsMap.length; x++){
+        for(y = 0; y < fieldsMap[x].length; y++){
+            if(animalsMap[x][y] != null){
+                animalsMap[x][y].postMove(x, y);
+            }
+        }
+    }
 }
 
 doGenerate();

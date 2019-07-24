@@ -101,7 +101,7 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         x = Math.floor(Math.random()*width);
         y = Math.floor(Math.random()*height);
         if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
-            animalsMap[x][y] = new Rabbit(50,50,50,50,nof_rabbits%2);
+            animalsMap[x][y] = new Rabbit(50,50,0.01,50,nof_rabbits%2);
             nof_rabbits -= 1;
         }
     }
