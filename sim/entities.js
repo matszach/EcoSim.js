@@ -324,7 +324,6 @@ class Animal{
         this.age += 1;
         if (!this.isAdult && this.age > this.childhoodTime){
             this.isAdult = true;
-            console.log("An Animal comes of age.")
         }
     }
 
