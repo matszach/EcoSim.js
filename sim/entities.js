@@ -9,6 +9,7 @@ class Animal{
     // perform lifecycle logic
     doActAndDraw(x, y){
         this.manageNeeds();
+        this.handleAge();
         if(this.actDelayCurr < 0){
             this.fieldIterator.reset(x, y);
             this.act(x, y);
@@ -134,7 +135,9 @@ class Animal{
 
     tryFieldForMate(xF, yF){
         try {
-            if(animalsMap[xF][yF].sex != this.sex && typeof animalsMap[xF][yF] == typeof this){
+            if(animalsMap[xF][yF].isAdult && 
+                animalsMap[xF][yF].sex != this.sex && 
+                typeof animalsMap[xF][yF] == typeof this){
                 return this.breed(animalsMap[xF][yF], xF, yF);
             } else {
                 return false;
@@ -153,6 +156,30 @@ class Animal{
         if(this.tryNearbyFieldsForMates(x, y)){
             return;
         }
+
+        while(this.fieldIterator.hasNext()){
+
+            var field = this.fieldIterator.getNext();
+            var xTarg = field[0];
+            var yTarg = field[1];
+
+            let fieldHasValidMate; 
+            try {
+                fieldHasValidMate = typeof animalsMap[xTarg][yTarg] == typeof this &&
+                                        animalsMap[xTarg][yTarg].sex != this.sex;
+            } catch {
+                continue;
+            }
+            
+            if(fieldHasValidMate){
+                // if move to field fails -> move randomly -> stay;
+                if(!this.moveToField(x, y, xTarg, yTarg)){
+                    this.moveRandom(x, y);
+                }
+                return;
+            }
+        }
+
         this.moveRandom(x, y);
     }
 
@@ -188,7 +215,8 @@ class Animal{
     }
 
     getTopNeed(){
-        if(this.needBreed > this.needHunger &&
+        if(this.isAdult &&  
+            this.needBreed > this.needHunger &&
             this.needBreed > this.needThrirst &&
             this.needHunger < this.breedThreshold &&
             this.needThrirst < this.breedThreshold){
@@ -209,8 +237,9 @@ class Animal{
     // draw this animal on canvas
     draw(x, y){
         CTX.fillStyle = this.color;
-        var off = (1 - this.drawSize)/2;
-        CTX.fillRect((ROOT_X + x + off) * UNIT, (ROOT_Y + y + off) * UNIT, UNIT*this.drawSize, UNIT*this.drawSize);
+        var s = this.isAdult ? this.drawSize : this.drawSize * CHILD_SIZE_DRAW_MOD;
+        var off = (1 - s)/2;
+        CTX.fillRect((ROOT_X + x + off) * UNIT, (ROOT_Y + y + off) * UNIT, UNIT*s, UNIT*s);
     }
 
     // =========================================== MOVEMENT =====================================
@@ -290,8 +319,17 @@ class Animal{
         this.draw(x. y);
     }
 
-    // constructor
-    constructor(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex){
+    // handles age
+    handleAge(){
+        this.age += 1;
+        if (!this.isAdult && this.age > this.childhoodTime){
+            this.isAdult = true;
+            console.log("An Animal comes of age.")
+        }
+    }
+
+    // constructors
+    constructor(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
 
         // draw color and size
         this.color = color;
@@ -303,6 +341,7 @@ class Animal{
         this.urgeToBreed = urgeToBreed;
         this.breedThreshold = breedThreshold;
         this.sex = sex;
+        this.childhoodTime = childhoodTime;
 
         // needs
         this.needHunger = 0;
@@ -320,11 +359,14 @@ class Animal{
         // alive
         this.isAlive = true;
 
+        // age
+        this.age = startAsAdult ? childhoodTime : 0;
+        this.isAdult = false;
+        
         // iterator
         this.fieldIterator = new NerbyFieldIterator(0, 0, this.sight);
-        
+ 
     }
-
 }
 
 
@@ -366,22 +408,17 @@ class Rabbit extends Animal{
         var osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
         var osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
         var osSex = Math.random() > 0.5 ? 0 : 1; 
+        var osChildhoodTime = (this.childhoodTime + mate.childhoodTime)/2 * this.calcMutation();
 
         // create the child
-        console.log('A new Rabbit is born.')
-        return new Rabbit(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex);
+        return new Rabbit(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex, osChildhoodTime, false);
 
-    }
-
-    die(){
-        super.die();
-        console.log('A Rabbit dies.')
     }
     
-    constructor(speed, sight, urgeToBreed, breedThreshold, sex){
+    constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
         var color = sex == 0 ? RABBIT_MALE_COLOR : RABBIT_FEMALE_COLOR;
         var drawSize = sex == 0 ? RABBIT_MALE_DRAW_SIZE : RABBIT_FEMALE_DRAW_SIZE;
-        super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex);
+        super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
     }
 }
 
@@ -395,9 +432,9 @@ class Fox extends Animal{
         // todo
     }
 
-    constructor(speed, sight, urgeToBreed, breedThreshold, sex){
+    constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
         var color = sex == 0 ? FOX_MALE_COLOR : FOX_FEMALE_COLOR;
-        super(color, speed, sight, urgeToBreed, breedThreshold, sex);
+        super(color, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
 
     }
 }
