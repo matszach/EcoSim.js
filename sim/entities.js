@@ -31,37 +31,6 @@ class Animal{
         // to be overriden
     }
 
-    lookForPlants(x, y){
-
-        // if there's sufficieng food left to warrant staying - stay
-        if(plantsMap[x][y] > MIN_PLANT_TO_CONSIDER){
-            return;
-        }
-
-        // use iterator to look for food
-        while(this.fieldIterator.hasNext()){
-            var field = this.fieldIterator.getNext();
-            var xTarg = field[0];
-            var yTarg = field[1];
-
-            let foodAtField; 
-            try {
-                foodAtField = plantsMap[xTarg][yTarg];
-            } catch {
-                continue;
-            }
-
-            if(foodAtField > MIN_PLANT_TO_CONSIDER){
-                // if move to field fails -> move randomly -> stay;
-                if(!this.moveToField(x, y, xTarg, yTarg)){
-                    this.moveRandom(x, y);
-                }
-                return;
-            }
-        }
-        this.moveRandom(x, y);
-    }
-
     lookForWater(x, y){
 
         // if there's water here - stay
@@ -111,12 +80,18 @@ class Animal{
 
                 // place the offspring on a nearby empty field
                 animalsMap[osX][osY] = this.buildOffspring(mate);
-
+                this.onBreedNeedsAdjust();
                 return true;
 
             }
         }
         return false
+    }
+
+    onBreedNeedsAdjust(){
+        this.needHunger += CHILD_HUNGER_COST;
+        this.needThrirst += CHILD_THIRST_COST;
+        this.needBreed -= CHILD_SATISFACTION;
     }
 
     tryNearbyFieldsForMates(x, y){
@@ -214,6 +189,7 @@ class Animal{
         
     }
 
+    // returns id of the need the animal will attepmt to satisfy
     getTopNeed(){
         if(this.isAdult &&  
             this.needBreed > this.needHunger &&
@@ -368,7 +344,9 @@ class Animal{
     }
 }
 
-
+// ===============================================================================================================
+// =====================================  RABBIT =================================================================
+// ===============================================================================================================
 class Rabbit extends Animal{
 
     canMoveTo(x, y){
@@ -385,6 +363,37 @@ class Rabbit extends Animal{
         plantsMap[x][y] -= amountEaten;
     }
 
+    lookForPlants(x, y){
+
+        // if there's sufficieng food left to warrant staying - stay
+        if(plantsMap[x][y] > MIN_PLANT_TO_CONSIDER){
+            return;
+        }
+
+        // use iterator to look for food
+        while(this.fieldIterator.hasNext()){
+            var field = this.fieldIterator.getNext();
+            var xTarg = field[0];
+            var yTarg = field[1];
+
+            let foodAtField; 
+            try {
+                foodAtField = plantsMap[xTarg][yTarg];
+            } catch {
+                continue;
+            }
+
+            if(foodAtField > MIN_PLANT_TO_CONSIDER){
+                // if move to field fails -> move randomly -> stay;
+                if(!this.moveToField(x, y, xTarg, yTarg)){
+                    this.moveRandom(x, y);
+                }
+                return;
+            }
+        }
+        this.moveRandom(x, y);
+    }
+
     act(x, y){
         switch(this.getTopNeed()){
             case HUNGER_NEED_ID : this.lookForPlants(x, y); break;
@@ -395,12 +404,6 @@ class Rabbit extends Animal{
     }
 
     buildOffspring(mate){
-
-        // apply costs
-        this.needHunger += CHILD_HUNGER_COST;
-        this.needThrirst += CHILD_THIRST_COST;
-        this.needBreed -= CHILD_SATISFACTION;
-
         // calculate attributes of the child
         var osSpeed = (this.speed + mate.speed)/2 * this.calcMutation();
         var osSight = (this.sight + mate.sight)/2 * this.calcMutation();
@@ -411,7 +414,6 @@ class Rabbit extends Animal{
 
         // create the child
         return new Rabbit(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex, osChildhoodTime, false);
-
     }
     
     constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
@@ -421,14 +423,77 @@ class Rabbit extends Animal{
     }
 }
 
+
+// ===============================================================================================================
+// =====================================  FOX  ===================================================================
+// ===============================================================================================================
 class Fox extends Animal{
 
     feed(x, y){
         // to be overriden
     }
 
+    lookForRabbits(x, y){
+
+        // if there's sufficieng food left to warrant staying - stay
+        if(plantsMap[x][y] > MIN_PLANT_TO_CONSIDER){
+            return;
+        }
+
+        // use iterator to look for food
+        while(this.fieldIterator.hasNext()){
+            var field = this.fieldIterator.getNext();
+            var xTarg = field[0];
+            var yTarg = field[1];
+
+            let foodAtField; 
+            try {
+                foodAtField = plantsMap[xTarg][yTarg];
+            } catch {
+                continue;
+            }
+
+            if(foodAtField > MIN_PLANT_TO_CONSIDER){
+                // if move to field fails -> move randomly -> stay;
+                if(!this.moveToField(x, y, xTarg, yTarg)){
+                    this.moveRandom(x, y);
+                }
+                return;
+            }
+        }
+        this.moveRandom(x, y);
+    }
+
+    tryFieldForRabbit(x, y){
+
+    }
+
+    eatRabbit(rabbit){
+        rabbit.die();
+        let f = rabbit.isAdult ? RABBIT_ADULT_FOOD_VALUE ? RABBIT_CHILD_FOOD_VALUE;
+        self.needHunger -= f;
+    }
+
     act(x, y){
-        // todo
+        switch(this.getTopNeed()){
+            case HUNGER_NEED_ID : this.lookForRabbits(x, y); break;
+            case THIRST_NEED_ID : this.lookForWater(x, y); break;
+            case BREEDING_NEED_ID : this.lookForMate(x, y); break;
+            default : this.moveRandom(x, y);
+        }
+    }
+
+    buildOffspring(mate){
+        // calculate attributes of the child
+        var osSpeed = (this.speed + mate.speed)/2 * this.calcMutation();
+        var osSight = (this.sight + mate.sight)/2 * this.calcMutation();
+        var osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
+        var osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
+        var osSex = Math.random() > 0.5 ? 0 : 1; 
+        var osChildhoodTime = (this.childhoodTime + mate.childhoodTime)/2 * this.calcMutation();
+
+        // create the child
+        return new Fox(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex, osChildhoodTime, false);
     }
 
     constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){

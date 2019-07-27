@@ -16,6 +16,10 @@ var CHILD_HUNGER_COST = 45;
 var CHILD_THIRST_COST = 20;
 var CHILD_SATISFACTION = 50;
 
+var RABBIT_ADULT_FOOD_VALUE = 60;
+var RABBIT_CHILD_FOOD_VALUE = 20;
+
+
 var MUTATION_LEVEL = 0.05;
 
 // speed calculation variables
