@@ -38,7 +38,7 @@ class Animal{
     lookForWater(x, y){
 
         // if there's water here - stay
-        if(fieldsMap[x][y] == WATER_FIELD_ID){
+        if(fieldsMap[x][y] == SHALLOW_WATER_FIELD_ID){
             return;
         }
         
@@ -50,7 +50,7 @@ class Animal{
 
             let fieldIsWater; 
             try {
-                fieldIsWater = fieldsMap[xTarg][yTarg] == WATER_FIELD_ID;
+                fieldIsWater = fieldsMap[xTarg][yTarg] == SHALLOW_sWATER_FIELD_ID;
             } catch {
                 continue;
             }
@@ -80,7 +80,7 @@ class Animal{
             var osY = fld[1];
             
             // a legal field is found
-            if(isFieldLegalForRabbit(osX, osY)){
+            if(isFieldMovementLegal(osX, osY)){
 
                 // place the offspring on a nearby empty field
                 animalsMap[osX][osY] = this.buildOffspring(mate);
@@ -371,11 +371,11 @@ class Animal{
 class Rabbit extends Animal{
 
     canMoveTo(x, y){
-        return isFieldLegalForRabbit(x, y);
+        return isFieldMovementLegal(x, y);
     }
 
     feed(x, y){
-        if(fieldsMap[x][y] == WATER_FIELD_ID){
+        if(fieldsMap[x][y] == SHALLOW_WATER_FIELD_ID){
             this.needThrirst -= WATER_DRUNK_PER_ACT;
             return;
         }
@@ -455,7 +455,7 @@ class Fox extends Animal{
         if(this.tryNearbyFieldsForRabbits(x, y)){
             return;
         }
-        if(fieldsMap[x][y] == WATER_FIELD_ID){
+        if(fieldsMap[x][y] == SHALLOW_WATER_FIELD_ID){
             this.needThrirst -= WATER_DRUNK_PER_ACT;
         }
     }
@@ -543,7 +543,7 @@ class Fox extends Animal{
 
 
     canMoveTo(x, y){
-        return isFieldLegalForFox(x, y);
+        return isFieldMovementLegal(x, y);
     }
 
     constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){

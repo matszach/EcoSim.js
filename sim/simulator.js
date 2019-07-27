@@ -7,10 +7,12 @@ function drawFiels() {
     for(x = 0; x < fieldsMap.length; x++){
         for(y = 0; y < fieldsMap[x].length; y++){
 
-            if(fieldsMap[x][y] == 1){
+            if(fieldsMap[x][y] == GRASS_FIELD_ID){
                 CTX.fillStyle = GRASS_FIELD_COLOR;
-            } else if (fieldsMap[x][y] == 2){
-                CTX.fillStyle = WATER_FIELD_COLOR;
+            } else if (fieldsMap[x][y] == SHALLOW_WATER_FIELD_ID){
+                CTX.fillStyle = SHALLOW_WATER_FIELD_COLOR;
+            } else if (fieldsMap[x][y] == DEEP_WATER_FIELD_ID){
+                CTX.fillStyle = DEEP_WATER_FIELD_COLOR;
             } else {
                 continue;
             }

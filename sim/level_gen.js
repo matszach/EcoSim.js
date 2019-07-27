@@ -40,7 +40,7 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         plantsMap[x] = [];
         animalsMap[x] = [];
         for(y = 0; y < height; y++){
-            fieldsMap[x][y] = 0;
+            fieldsMap[x][y] = VOID_FIELD_ID;
             plantsMap[x][y] = 0;
             animalsMap[x][y] = null;
         }
@@ -62,7 +62,7 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
             
             // check if inside of the map elipsis
             if(exSq/aSq + eySq/bSq < 1){
-                fieldsMap[x][y] = 1;
+                fieldsMap[x][y] = GRASS_FIELD_ID;
             }
         }
     }
@@ -73,7 +73,7 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         try { 
             x = Math.floor(Math.random()*width);
             y = Math.floor(Math.random()*height);
-            if(fieldsMap[x][y] == 1){
+            if(fieldsMap[x][y] == GRASS_FIELD_ID){
                 generatePond(x, y, pond_size);
             }
             nof_ponds -= 1;
@@ -85,11 +85,12 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
     fillGapsInPonds(width, height, 2);
     fillGapsInPonds(width, height, 3);
     fillGapsInPonds(width, height, 4);
+    generateShallowWater(width, height);
 
     // generate plants
     for(x = 0; x < width; x++){
         for(y = 0; y < height; y++){
-            if(fieldsMap[x][y] == 1 && Math.random() < plant_density){
+            if(fieldsMap[x][y] == GRASS_FIELD_ID && Math.random() < plant_density){
                     plantsMap[x][y] = Math.round(Math.random()*PLANT_MAX_VALUE);
             }
         }
@@ -100,8 +101,8 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
     while(nof_rabbits > 0){
         x = Math.floor(Math.random()*width);
         y = Math.floor(Math.random()*height);
-        if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
-            animalsMap[x][y] = new Rabbit(40,50,0.02,50,nof_rabbits%2, 500, true);
+        if(fieldsMap[x][y] == GRASS_FIELD_ID && animalsMap[x][y] == null){
+            animalsMap[x][y] = new Rabbit(40,80,0.02,50,nof_rabbits%2, 500, true);
             nof_rabbits -= 1;
         }
     }
@@ -109,8 +110,8 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
     while(nof_foxes > 0){
         x = Math.floor(Math.random()*width);
         y = Math.floor(Math.random()*height);
-        if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
-            animalsMap[x][y] = new Fox(70,70,0.01,50,nof_foxes%2, 800, true);
+        if(fieldsMap[x][y] == GRASS_FIELD_ID && animalsMap[x][y] == null){
+            animalsMap[x][y] = new Fox(70,160,0.01,50,nof_foxes%2, 800, true);
             nof_foxes -= 1;
         }
     }
@@ -124,8 +125,8 @@ function generatePond(x, y, size) {
         return;
     }
 
-    if(fieldsMap[x][y] == 1){
-        fieldsMap[x][y] = 2;
+    if(fieldsMap[x][y] == GRASS_FIELD_ID){
+        fieldsMap[x][y] = DEEP_WATER_FIELD_ID;
         if(Math.random() > 0.5){
             generatePond(x+1,y,size-1)
         } 
@@ -148,35 +149,50 @@ function fillGapsInPonds(width, height, min_neighbors) {
     for(x = 0; x < width; x++){
         fieldsToFill[x] = [];
         for(y = 0; y < height; y++){
-            fieldsToFill[x][y] = 0;
+            fieldsToFill[x][y] = VOID_FIELD_ID;
         }
     }
 
     for(x = 1; x < width-2; x++){
         for(y = 1; y < height-2; y++){
             var neighboors = 0;
-            if(fieldsMap[x+1][y] == 2){
+            if(fieldsMap[x+1][y] == DEEP_WATER_FIELD_ID){
                 neighboors += 1;
             }
-            if(fieldsMap[x-1][y] == 2){
+            if(fieldsMap[x-1][y] == DEEP_WATER_FIELD_ID){
                 neighboors += 1;
             }
-            if(fieldsMap[x][y+1] == 2){
+            if(fieldsMap[x][y+1] == DEEP_WATER_FIELD_ID){
                 neighboors += 1;
             }
-            if(fieldsMap[x][y-1] == 2){
+            if(fieldsMap[x][y-1] == DEEP_WATER_FIELD_ID){
                 neighboors += 1;
             }
             if(neighboors >= min_neighbors){
-                fieldsToFill[x][y] = 2;
+                fieldsToFill[x][y] = DEEP_WATER_FIELD_ID;
             }
         }
     }
 
     for(x = 0; x < width; x++){
         for(y = 0; y < height; y++){
-            if(fieldsToFill[x][y] == 2){
-                fieldsMap[x][y] = 2;
+            if(fieldsToFill[x][y] == DEEP_WATER_FIELD_ID){
+                fieldsMap[x][y] = DEEP_WATER_FIELD_ID;
+            }
+        }
+    }
+}
+
+function generateShallowWater(width, height){
+    for(x = 1; x < width-2; x++){
+        for(y = 1; y < height-2; y++){
+            // any field, currently mareked as deep water, is transformed to shallow water
+            // if it has at least one grass neighbour
+            if(fieldsMap[x][y] == DEEP_WATER_FIELD_ID){
+                if(fieldsMap[x+1][y] == GRASS_FIELD_ID || fieldsMap[x-1][y] == GRASS_FIELD_ID ||
+                   fieldsMap[x][y+1] == GRASS_FIELD_ID || fieldsMap[x][y-1] == GRASS_FIELD_ID){
+                    fieldsMap[x][y] = SHALLOW_WATER_FIELD_ID;
+                }
             }
         }
     }
