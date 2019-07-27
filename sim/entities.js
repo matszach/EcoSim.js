@@ -228,8 +228,8 @@ class Animal{
         if(!this.canMoveTo(x-1,y)){
             return false;
         }
-        animalsMap[x][y] = null;
-        animalsMap[x-1][y] = this;
+        this.nullField(x, y);
+        this.placeSelf(x-1, y);
         return true;
     }
 
@@ -237,8 +237,8 @@ class Animal{
         if(!this.canMoveTo(x+1,y)){
             return false;
         }
-        animalsMap[x][y] = null;
-        animalsMap[x+1][y] = this;
+        this.nullField(x, y);
+        this.placeSelf(x+1, y);
         return true;
     }
 
@@ -246,8 +246,8 @@ class Animal{
         if(!this.canMoveTo(x,y-1)){
             return false;
         }
-        animalsMap[x][y] = null;
-        animalsMap[x][y-1] = this;
+        this.nullField(x, y);
+        this.placeSelf(x, y-1);
         return true;
     }
 
@@ -255,9 +255,17 @@ class Animal{
         if(!this.canMoveTo(x,y+1)){
             return false;
         }
-        animalsMap[x][y] = null;
-        animalsMap[x][y+1] = this;
+        this.nullField(x, y);
+        this.placeSelf(x, y+1);
         return true;
+    }
+
+    nullField(x, y){
+        animalsMap[x][y] = null;
+    }
+
+    placeSelf(x, y){
+        animalsMap[x][y] = this;
     }
 
     moveRandom(x, y){
@@ -459,7 +467,7 @@ class Fox extends Animal{
 
             let fieldHasRabbit; 
             try {
-                fieldHasRabbit = animalsMap[xTarg][yTarg].typeId = RABBIT_TYPE_ID;
+                fieldHasRabbit = animalsMap[xTarg][yTarg].typeId == RABBIT_TYPE_ID;
             } catch {
                 continue;
             }
@@ -491,7 +499,6 @@ class Fox extends Animal{
 
     tryFieldForRabbit(x, y){
         try{
-
             if(animalsMap[x][y].typeId == RABBIT_TYPE_ID){
                 this.eatRabbit(animalsMap[x][y]);
                 return true;
@@ -510,13 +517,12 @@ class Fox extends Animal{
     }
 
     act(x, y){
-        this.lookForRabbits(x, y);
-        // switch(this.getTopNeed()){
-        //     case HUNGER_NEED_ID : this.lookForRabbits(x, y); break;
-        //     case THIRST_NEED_ID : this.lookForWater(x, y); break;
-        //     case BREEDING_NEED_ID : this.lookForMate(x, y); break;
-        //     default : this.moveRandom(x, y);
-        // }
+        switch(this.getTopNeed()){
+            case HUNGER_NEED_ID : this.lookForRabbits(x, y); break;
+            case THIRST_NEED_ID : this.lookForWater(x, y); break;
+            case BREEDING_NEED_ID : this.lookForMate(x, y); break;
+            default : this.moveRandom(x, y);
+        }
     }
 
     buildOffspring(mate){
@@ -542,6 +548,5 @@ class Fox extends Animal{
         var drawSize = sex == 0 ? FOX_MALE_DRAW_SIZE :FOX_FEMALE_DRAW_SIZE;
         super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
         this.typeId = FOX_TYPE_ID;
-
     }
 }
