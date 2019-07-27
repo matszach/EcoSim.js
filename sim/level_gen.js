@@ -101,7 +101,7 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         x = Math.floor(Math.random()*width);
         y = Math.floor(Math.random()*height);
         if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
-            animalsMap[x][y] = new Rabbit(50,50,0.01,50,nof_rabbits%2, 500, true);
+            animalsMap[x][y] = new Rabbit(40,50,0.02,50,nof_rabbits%2, 500, true);
             nof_rabbits -= 1;
         }
     }
@@ -110,7 +110,7 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         x = Math.floor(Math.random()*width);
         y = Math.floor(Math.random()*height);
         if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
-            animalsMap[x][y] = new Fox(50,50,0.01,50,nof_foxes%2, 800, true);
+            animalsMap[x][y] = new Fox(70,70,0.01,50,nof_foxes%2, 800, true);
             nof_foxes -= 1;
         }
     }

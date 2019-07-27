@@ -8,6 +8,9 @@ class Animal{
 
     // perform lifecycle logic
     doActAndDraw(x, y){
+        // console.log("H:", Math.round(this.needHunger,2), 
+        //     "T:", Math.round(this.needThrirst,2), 
+        //     "B:", Math.round(this.needBreed,2));
         this.manageNeeds();
         this.handleAge();
         if(this.actDelayCurr < 0){
@@ -513,14 +516,14 @@ class Fox extends Animal{
     eatRabbit(rabbit){
         rabbit.die();
         let f = rabbit.isAdult ? RABBIT_ADULT_FOOD_VALUE : RABBIT_CHILD_FOOD_VALUE;
-        self.needHunger -= f;
+        this.needHunger -= f;
     }
 
     act(x, y){
         switch(this.getTopNeed()){
             case HUNGER_NEED_ID : this.lookForRabbits(x, y); break;
             case THIRST_NEED_ID : this.lookForWater(x, y); break;
-            case BREEDING_NEED_ID : this.lookForMate(x, y); break;
+            case BREEDING_NEED_ID : this.lookForMate(x, y);break;
             default : this.moveRandom(x, y);
         }
     }
