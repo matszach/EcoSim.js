@@ -153,23 +153,27 @@ function fillGapsInPonds(width, height, min_neighbors) {
         }
     }
 
-    for(x = 1; x < width-2; x++){
-        for(y = 1; y < height-2; y++){
-            var neighboors = 0;
-            if(fieldsMap[x+1][y] == DEEP_WATER_FIELD_ID){
-                neighboors += 1;
-            }
-            if(fieldsMap[x-1][y] == DEEP_WATER_FIELD_ID){
-                neighboors += 1;
-            }
-            if(fieldsMap[x][y+1] == DEEP_WATER_FIELD_ID){
-                neighboors += 1;
-            }
-            if(fieldsMap[x][y-1] == DEEP_WATER_FIELD_ID){
-                neighboors += 1;
-            }
-            if(neighboors >= min_neighbors){
-                fieldsToFill[x][y] = DEEP_WATER_FIELD_ID;
+    for(x = 0; x < width; x++){
+        for(y = 0; y < height; y++){
+            try{
+                var neighboors = 0;
+                if(fieldsMap[x+1][y] == DEEP_WATER_FIELD_ID){
+                    neighboors += 1;
+                }
+                if(fieldsMap[x-1][y] == DEEP_WATER_FIELD_ID){
+                    neighboors += 1;
+                }
+                if(fieldsMap[x][y+1] == DEEP_WATER_FIELD_ID){
+                    neighboors += 1;
+                }
+                if(fieldsMap[x][y-1] == DEEP_WATER_FIELD_ID){
+                    neighboors += 1;
+                }
+                if(neighboors >= min_neighbors){
+                    fieldsToFill[x][y] = DEEP_WATER_FIELD_ID;
+                }
+            } catch {
+                continue;
             }
         }
     }
@@ -184,14 +188,18 @@ function fillGapsInPonds(width, height, min_neighbors) {
 }
 
 function generateShallowWater(width, height){
-    for(x = 1; x < width-2; x++){
-        for(y = 1; y < height-2; y++){
+    for(x = 0; x < width; x++){
+        for(y = 0; y < height; y++){
             // any field, currently mareked as deep water, is transformed to shallow water
             // if it has at least one grass neighbour
             if(fieldsMap[x][y] == DEEP_WATER_FIELD_ID){
-                if(fieldsMap[x+1][y] == GRASS_FIELD_ID || fieldsMap[x-1][y] == GRASS_FIELD_ID ||
-                   fieldsMap[x][y+1] == GRASS_FIELD_ID || fieldsMap[x][y-1] == GRASS_FIELD_ID){
-                    fieldsMap[x][y] = SHALLOW_WATER_FIELD_ID;
+                try{
+                    if(fieldsMap[x+1][y] == GRASS_FIELD_ID || fieldsMap[x-1][y] == GRASS_FIELD_ID ||
+                    fieldsMap[x][y+1] == GRASS_FIELD_ID || fieldsMap[x][y-1] == GRASS_FIELD_ID){
+                        fieldsMap[x][y] = SHALLOW_WATER_FIELD_ID;
+                    }
+                } catch {
+                    continue;
                 }
             }
         }
