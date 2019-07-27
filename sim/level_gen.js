@@ -195,7 +195,9 @@ function generateShallowWater(width, height){
             if(fieldsMap[x][y] == DEEP_WATER_FIELD_ID){
                 try{
                     if(fieldsMap[x+1][y] == GRASS_FIELD_ID || fieldsMap[x-1][y] == GRASS_FIELD_ID ||
-                    fieldsMap[x][y+1] == GRASS_FIELD_ID || fieldsMap[x][y-1] == GRASS_FIELD_ID){
+                    fieldsMap[x][y+1] == GRASS_FIELD_ID || fieldsMap[x][y-1] == GRASS_FIELD_ID ||
+                    fieldsMap[x+1][y+1] == GRASS_FIELD_ID || fieldsMap[x-1][y-1] == GRASS_FIELD_ID ||
+                    fieldsMap[x+1][y-1] == GRASS_FIELD_ID || fieldsMap[x-1][y+1] == GRASS_FIELD_ID){
                         fieldsMap[x][y] = SHALLOW_WATER_FIELD_ID;
                     }
                 } catch {
