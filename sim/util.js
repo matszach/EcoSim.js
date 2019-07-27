@@ -18,6 +18,26 @@ function isFieldLegalForRabbit(x, y){
     return true;
 }
 
+function isFieldLegalForFox(x, y){
+
+    // field does not exist
+    if(isFieldOutOfBounds(x,y)){
+        return false;
+    // field is void
+    } else if(fieldsMap[x][y] == 0){
+        return false;
+    // field is occupied
+    } else if(animalsMap[x][y] != null){
+        return false;
+    // field is water and is sorrounded by water 
+    } else if (isFieldDeepWater(x, y)){
+        return false;
+    }
+
+    // otherwise the field is legal
+    return true;
+}
+
 function isFieldDeepWater(x, y){
     // "it's easier to as for forgiveness than for permission"
     try{

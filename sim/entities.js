@@ -14,6 +14,7 @@ class Animal{
             this.fieldIterator.reset(x, y);
             this.act(x, y);
             this.actDelayCurr = this.actDelayMax;
+            this.isPostActPending = true;
         } else {    
             this.actDelayCurr -= 1;
             this.draw(x, y);
@@ -112,7 +113,7 @@ class Animal{
         try {
             if(animalsMap[xF][yF].isAdult && 
                 animalsMap[xF][yF].sex != this.sex && 
-                typeof animalsMap[xF][yF] == typeof this){
+                animalsMap[xF][yF].typeId == this.typeId){
                 return this.breed(animalsMap[xF][yF], xF, yF);
             } else {
                 return false;
@@ -140,7 +141,7 @@ class Animal{
 
             let fieldHasValidMate; 
             try {
-                fieldHasValidMate = typeof animalsMap[xTarg][yTarg] == typeof this &&
+                fieldHasValidMate = animalsMap[xTarg][yTarg].typeId == this.typeId &&
                                         animalsMap[xTarg][yTarg].sex != this.sex;
             } catch {
                 continue;
@@ -291,8 +292,12 @@ class Animal{
 
     // post move
     postMove(x, y){
-        this.feed(x, y);
-        this.draw(x. y);
+        if(this.isPostActPending){
+            this.feed(x, y);
+            this.draw(x. y);
+            this.isPostActPending = false;
+        }
+     
     }
 
     // handles age
@@ -305,6 +310,8 @@ class Animal{
 
     // constructors
     constructor(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
+
+        this.typeId = ANIMAL_TYPE_ID;
 
         // draw color and size
         this.color = color;
@@ -340,6 +347,9 @@ class Animal{
         
         // iterator
         this.fieldIterator = new NerbyFieldIterator(0, 0, this.sight);
+
+        // post move action pending marker (post act sis performed directly after act)
+        this.isPostActPending;
  
     }
 }
@@ -420,6 +430,7 @@ class Rabbit extends Animal{
         var color = sex == 0 ? RABBIT_MALE_COLOR : RABBIT_FEMALE_COLOR;
         var drawSize = sex == 0 ? RABBIT_MALE_DRAW_SIZE : RABBIT_FEMALE_DRAW_SIZE;
         super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
+        this.typeId = RABBIT_TYPE_ID;        
     }
 }
 
@@ -430,30 +441,30 @@ class Rabbit extends Animal{
 class Fox extends Animal{
 
     feed(x, y){
-        // to be overriden
+        if(this.tryNearbyFieldsForRabbits(x, y)){
+            return;
+        }
+        if(fieldsMap[x][y] == WATER_FIELD_ID){
+            this.needThrirst -= WATER_DRUNK_PER_ACT;
+        }
     }
 
     lookForRabbits(x, y){
 
-        // if there's sufficieng food left to warrant staying - stay
-        if(plantsMap[x][y] > MIN_PLANT_TO_CONSIDER){
-            return;
-        }
-
-        // use iterator to look for food
         while(this.fieldIterator.hasNext()){
+
             var field = this.fieldIterator.getNext();
             var xTarg = field[0];
             var yTarg = field[1];
 
-            let foodAtField; 
+            let fieldHasRabbit; 
             try {
-                foodAtField = plantsMap[xTarg][yTarg];
+                fieldHasRabbit = animalsMap[xTarg][yTarg].typeId = RABBIT_TYPE_ID;
             } catch {
                 continue;
             }
-
-            if(foodAtField > MIN_PLANT_TO_CONSIDER){
+            
+            if(fieldHasRabbit){
                 // if move to field fails -> move randomly -> stay;
                 if(!this.moveToField(x, y, xTarg, yTarg)){
                     this.moveRandom(x, y);
@@ -464,23 +475,48 @@ class Fox extends Animal{
         this.moveRandom(x, y);
     }
 
-    tryFieldForRabbit(x, y){
+    tryNearbyFieldsForRabbits(x, y){
+        if(this.tryFieldForRabbit(x, y+1)){
+            return true;
+        } else if (this.tryFieldForRabbit(x, y-1)){
+            return true;
+        } else if (this.tryFieldForRabbit(x-1, y)){
+            return true;
+        } else if (this.tryFieldForRabbit(x+1, y)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    tryFieldForRabbit(x, y){
+        try{
+
+            if(animalsMap[x][y].typeId == RABBIT_TYPE_ID){
+                this.eatRabbit(animalsMap[x][y]);
+                return true;
+            } else {
+                return false;
+            }
+        } catch {
+            return false;
+        }
     }
 
     eatRabbit(rabbit){
         rabbit.die();
-        let f = rabbit.isAdult ? RABBIT_ADULT_FOOD_VALUE ? RABBIT_CHILD_FOOD_VALUE;
+        let f = rabbit.isAdult ? RABBIT_ADULT_FOOD_VALUE : RABBIT_CHILD_FOOD_VALUE;
         self.needHunger -= f;
     }
 
     act(x, y){
-        switch(this.getTopNeed()){
-            case HUNGER_NEED_ID : this.lookForRabbits(x, y); break;
-            case THIRST_NEED_ID : this.lookForWater(x, y); break;
-            case BREEDING_NEED_ID : this.lookForMate(x, y); break;
-            default : this.moveRandom(x, y);
-        }
+        this.lookForRabbits(x, y);
+        // switch(this.getTopNeed()){
+        //     case HUNGER_NEED_ID : this.lookForRabbits(x, y); break;
+        //     case THIRST_NEED_ID : this.lookForWater(x, y); break;
+        //     case BREEDING_NEED_ID : this.lookForMate(x, y); break;
+        //     default : this.moveRandom(x, y);
+        // }
     }
 
     buildOffspring(mate){
@@ -496,9 +532,16 @@ class Fox extends Animal{
         return new Fox(osSpeed, osSight, osUrgeToBreed, osBreedThreshold, osSex, osChildhoodTime, false);
     }
 
+
+    canMoveTo(x, y){
+        return isFieldLegalForFox(x, y);
+    }
+
     constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
         var color = sex == 0 ? FOX_MALE_COLOR : FOX_FEMALE_COLOR;
-        super(color, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
+        var drawSize = sex == 0 ? FOX_MALE_DRAW_SIZE :FOX_FEMALE_DRAW_SIZE;
+        super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
+        this.typeId = FOX_TYPE_ID;
 
     }
 }

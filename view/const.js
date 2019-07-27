@@ -25,6 +25,10 @@ const VOID_FIELD_ID = 0;
 const GRASS_FIELD_ID = 1;
 const WATER_FIELD_ID = 2;
 
+const ANIMAL_TYPE_ID = 0;
+const RABBIT_TYPE_ID = 1;
+const FOX_TYPE_ID = 2;
+
 const HUNGER_NEED_ID = 0;
 const THIRST_NEED_ID = 1;
 const BREEDING_NEED_ID = 2;

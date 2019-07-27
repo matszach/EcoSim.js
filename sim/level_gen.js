@@ -2,7 +2,7 @@ function doGenerate(){
     width = parseInt(NS_SLD_WIDTH.value);
     height = parseInt(NS_SLD_HEIGHT.value);
     nof_rabbits = parseInt(NS_SLD_RABBITS.value);
-    nof_foxes = 0;
+    nof_foxes = parseInt(NS_SLD_FOXES.value);
     nof_ponds = parseInt(NS_SLD_NOF_PONDS.value);
     pond_size = parseInt(NS_SLD_POND_SIZE.value);
     plant_density = parseInt(NS_SLD_PLANT_DENSITY.value)/100
@@ -103,6 +103,15 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
             animalsMap[x][y] = new Rabbit(50,50,0.01,50,nof_rabbits%2, 500, true);
             nof_rabbits -= 1;
+        }
+    }
+
+    while(nof_foxes > 0){
+        x = Math.floor(Math.random()*width);
+        y = Math.floor(Math.random()*height);
+        if(fieldsMap[x][y] == 1 && animalsMap[x][y] == null){
+            animalsMap[x][y] = new Fox(50,50,0.01,50,nof_foxes%2, 800, true);
+            nof_foxes -= 1;
         }
     }
 

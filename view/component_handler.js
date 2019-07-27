@@ -10,6 +10,7 @@ const VMHP_BOTTOM = document.getElementById("vmhp_bottom");
 const NS_SLD_WIDTH = document.getElementById("ns_sld_width");
 const NS_SLD_HEIGHT = document.getElementById("ns_sld_height");
 const NS_SLD_RABBITS = document.getElementById("ns_sld_rabbits");
+const NS_SLD_FOXES = document.getElementById("ns_sld_foxes");
 const NS_SLD_NOF_PONDS = document.getElementById("ns_sld_nof_ponds");
 const NS_SLD_POND_SIZE = document.getElementById("ns_sld_pond_size");
 const NS_SLD_PLANT_DENSITY = document.getElementById("ns_sld_plant_density");
