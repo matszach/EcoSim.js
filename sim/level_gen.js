@@ -1,4 +1,6 @@
 function doGenerate(){
+
+    // generating the map
     width = parseInt(NS_SLD_WIDTH.value);
     height = parseInt(NS_SLD_HEIGHT.value);
     nof_rabbits = parseInt(NS_SLD_RABBITS.value);
@@ -7,6 +9,10 @@ function doGenerate(){
     pond_size = parseInt(NS_SLD_POND_SIZE.value);
     plant_density = parseInt(NS_SLD_PLANT_DENSITY.value)/100
     generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_size, plant_density)
+
+    // adjusting the simulation variables
+    PLANT_SPAWN_CHANCE = parseFloat(NS_SLD_PLANT_SPAWN.value);
+    PLANT_GROWTH_RATE = parseFloat(NS_SLD_PLANT_GROWTH.value);
 }
 
 function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_size, plant_density){
@@ -102,7 +108,10 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         x = Math.floor(Math.random()*width);
         y = Math.floor(Math.random()*height);
         if(fieldsMap[x][y] == GRASS_FIELD_ID && animalsMap[x][y] == null){
-            animalsMap[x][y] = new Rabbit(40,80,0.02,50,nof_rabbits%2, 500, true);
+            var SEX = nof_rabbits % 2;
+            animalsMap[x][y] = new Rabbit(
+                INIT_RABBIT_SPEED,INIT_RABBIT_SIGHT,INIT_RABBIT_URGE,INIT_RABBIT_THRESHOLD,
+                SEX, INIT_RABBIT_CHILDHOOD, true);
             nof_rabbits -= 1;
         }
     }
@@ -111,7 +120,10 @@ function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_si
         x = Math.floor(Math.random()*width);
         y = Math.floor(Math.random()*height);
         if(fieldsMap[x][y] == GRASS_FIELD_ID && animalsMap[x][y] == null){
-            animalsMap[x][y] = new Fox(70,160,0.01,50,nof_foxes%2, 800, true);
+            var SEX = nof_foxes % 2;
+            animalsMap[x][y] = new Fox(
+                INIT_FAX_SPEED,INIT_FAX_SIGHT,INIT_FAX_URGE,INIT_FAX_THRESHOLD,
+                SEX, INIT_FAX_CHILDHOOD, true);
             nof_foxes -= 1;
         }
     }

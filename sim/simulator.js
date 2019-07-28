@@ -39,11 +39,11 @@ function growAndDrawPlats() {
                 if(v < PLANT_MAX_VALUE){
                     plantsMap[x][y] += PLANT_GROWTH_RATE;
                 }
-                scale = v/PLANT_MAX_VALUE*1.2;
+                scale = v/PLANT_MAX_VALUE*MAX_VALUE_PLANT_DRAW_SIZE;
                 off = -scale/2 + 0.5
                 CTX.fillRect((ROOT_X+x+off)*UNIT,(ROOT_Y+y+off)*UNIT, scale*UNIT, scale*UNIT);
 
-            } else if (fieldsMap[x][y] == 1){
+            } else if (fieldsMap[x][y] == GRASS_FIELD_ID){
                 if(Math.random() < PLANT_SPAWN_CHANCE){
                     plantsMap[x][y] = 1;
                 }

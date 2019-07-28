@@ -22,6 +22,7 @@ const RABBIT_FEMALE_DRAW_SIZE = 0.55;
 const FOX_MALE_DRAW_SIZE = 1.10;
 const FOX_FEMALE_DRAW_SIZE = 0.95;
 const CHILD_SIZE_DRAW_MOD = 0.6;
+const MAX_VALUE_PLANT_DRAW_SIZE = 1.2;
 
 const VOID_FIELD_ID = 0;
 const GRASS_FIELD_ID = 1;
@@ -31,6 +32,9 @@ const DEEP_WATER_FIELD_ID = 3;
 const ANIMAL_TYPE_ID = 0;
 const RABBIT_TYPE_ID = 1;
 const FOX_TYPE_ID = 2;
+
+const MALE = 0;
+const FEMALE = 1;
 
 const HUNGER_NEED_ID = 0;
 const THIRST_NEED_ID = 1;

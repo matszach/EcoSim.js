@@ -7,23 +7,31 @@ const VMHP_TOP = document.getElementById("vmhp_top");
 const VMHP_RIGHT = document.getElementById("vmhp_right");
 const VMHP_BOTTOM = document.getElementById("vmhp_bottom");
 
+// fields
 const NS_SLD_WIDTH = document.getElementById("ns_sld_width");
-const NS_SLD_HEIGHT = document.getElementById("ns_sld_height");
-const NS_SLD_RABBITS = document.getElementById("ns_sld_rabbits");
-const NS_SLD_FOXES = document.getElementById("ns_sld_foxes");
-const NS_SLD_NOF_PONDS = document.getElementById("ns_sld_nof_ponds");
-const NS_SLD_POND_SIZE = document.getElementById("ns_sld_pond_size");
-const NS_SLD_PLANT_DENSITY = document.getElementById("ns_sld_plant_density");
-
 const NS_SLD_WIDTH_VAL = document.getElementById("ns_sld_width_val");
+const NS_SLD_HEIGHT = document.getElementById("ns_sld_height");
 const NS_SLD_HEIGHT_VAL = document.getElementById("ns_sld_height_val");
-const NS_SLD_RABBITS_VAL = document.getElementById("ns_sld_rabbits_val");
-const NS_SLD_FOXES_VAL = document.getElementById("ns_sld_foxes_val");
+const NS_SLD_NOF_PONDS = document.getElementById("ns_sld_nof_ponds");
 const NS_SLD_NOF_PONDS_VAL = document.getElementById("ns_sld_nof_ponds_val");
+const NS_SLD_POND_SIZE = document.getElementById("ns_sld_pond_size");
 const NS_SLD_POND_SIZE_VAL = document.getElementById("ns_sld_pond_size_val");
+
+// animals
+const NS_SLD_RABBITS = document.getElementById("ns_sld_rabbits");
+const NS_SLD_RABBITS_VAL = document.getElementById("ns_sld_rabbits_val");
+const NS_SLD_FOXES = document.getElementById("ns_sld_foxes");
+const NS_SLD_FOXES_VAL = document.getElementById("ns_sld_foxes_val");
+
+// plants
+const NS_SLD_PLANT_DENSITY = document.getElementById("ns_sld_plant_density");
 const NS_SLD_PLANT_DENSITY_VAL = document.getElementById("ns_sld_plant_density_val");
+const NS_SLD_PLANT_SPAWN = document.getElementById("ns_sld_plant_spawn");
+const NS_SLD_PLANT_SPAWN_VAL = document.getElementById("ns_sld_plant_spawn_val");
+const NS_SLD_PLANT_GROWTH = document.getElementById("ns_sld_plant_growth");
+const NS_SLD_PLANT_GROWTH_VAL = document.getElementById("ns_sld_plant_growth_val");
 
-
+// interract
 const SLD_SCALE = document.getElementById("ns_sld_scale");
 const SLD_DELAY = document.getElementById("ns_sld_delay");
 
@@ -146,11 +154,16 @@ window.addEventListener('wheel', (e) => setScaleByWheel(e.deltaY));
 function doUpdateValues(){
     NS_SLD_WIDTH_VAL.innerHTML = NS_SLD_WIDTH.value;
     NS_SLD_HEIGHT_VAL.innerHTML = NS_SLD_HEIGHT.value;
-    NS_SLD_RABBITS_VAL.innerHTML = NS_SLD_RABBITS.value;
-    NS_SLD_FOXES_VAL.innerHTML = NS_SLD_FOXES.value; 
     NS_SLD_NOF_PONDS_VAL.innerHTML = NS_SLD_NOF_PONDS.value;
     NS_SLD_POND_SIZE_VAL.innerHTML = NS_SLD_POND_SIZE.value; 
-    NS_SLD_PLANT_DENSITY_VAL.innerHTML = NS_SLD_PLANT_DENSITY.value; 
+
+    NS_SLD_RABBITS_VAL.innerHTML = NS_SLD_RABBITS.value;
+    NS_SLD_FOXES_VAL.innerHTML = NS_SLD_FOXES.value; 
+    
+    NS_SLD_PLANT_DENSITY_VAL.innerHTML = NS_SLD_PLANT_DENSITY.value + '%'; 
+    NS_SLD_PLANT_SPAWN_VAL.innerHTML = Math.round(NS_SLD_PLANT_SPAWN.value*100000); // preetying up the display
+    NS_SLD_PLANT_GROWTH_VAL.innerHTML = Math.round(NS_SLD_PLANT_GROWTH.value*100);  // preetying up the display
+
     SLD_SCALE_VAL.innerHTML = SLD_SCALE.value; 
     SLD_DELAY_VAL.innerHTML = SLD_DELAY.value; 
 }

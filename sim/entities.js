@@ -430,7 +430,7 @@ class Rabbit extends Animal{
         var osSight = (this.sight + mate.sight)/2 * this.calcMutation();
         var osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
         var osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
-        var osSex = Math.random() > 0.5 ? 0 : 1; 
+        var osSex = Math.random() > 0.5 ? MALE : FEMALE; 
         var osChildhoodTime = (this.childhoodTime + mate.childhoodTime)/2 * this.calcMutation();
 
         // create the child
@@ -438,8 +438,8 @@ class Rabbit extends Animal{
     }
     
     constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
-        var color = sex == 0 ? RABBIT_MALE_COLOR : RABBIT_FEMALE_COLOR;
-        var drawSize = sex == 0 ? RABBIT_MALE_DRAW_SIZE : RABBIT_FEMALE_DRAW_SIZE;
+        var color = sex == MALE ? RABBIT_MALE_COLOR : RABBIT_FEMALE_COLOR;
+        var drawSize = sex == MALE ? RABBIT_MALE_DRAW_SIZE : RABBIT_FEMALE_DRAW_SIZE;
         super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
         this.typeId = RABBIT_TYPE_ID;        
     }
@@ -534,7 +534,7 @@ class Fox extends Animal{
         var osSight = (this.sight + mate.sight)/2 * this.calcMutation();
         var osUrgeToBreed = (this.urgeToBreed + mate.urgeToBreed)/2 * this.calcMutation();
         var osBreedThreshold = (this.breedThreshold + mate.breedThreshold)/2 * this.calcMutation();
-        var osSex = Math.random() > 0.5 ? 0 : 1; 
+        var osSex = Math.random() > 0.5 ? MALE : FEMALE; 
         var osChildhoodTime = (this.childhoodTime + mate.childhoodTime)/2 * this.calcMutation();
 
         // create the child
@@ -547,8 +547,8 @@ class Fox extends Animal{
     }
 
     constructor(speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult){
-        var color = sex == 0 ? FOX_MALE_COLOR : FOX_FEMALE_COLOR;
-        var drawSize = sex == 0 ? FOX_MALE_DRAW_SIZE :FOX_FEMALE_DRAW_SIZE;
+        var color = sex == MALE ? FOX_MALE_COLOR : FOX_FEMALE_COLOR;
+        var drawSize = sex == MALE ? FOX_MALE_DRAW_SIZE :FOX_FEMALE_DRAW_SIZE;
         super(color, drawSize, speed, sight, urgeToBreed, breedThreshold, sex, childhoodTime, startAsAdult);
         this.typeId = FOX_TYPE_ID;
     }
