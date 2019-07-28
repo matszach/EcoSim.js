@@ -5,12 +5,14 @@ const MAX_UNIT_SIZE = 200;
 
 // entities and map will be drawn with an offset based on these,
 // positive whole numbers only
-var ROOT_X = 10;
-var ROOT_Y = 10;
-var MIN_X = 10;
-var MIN_Y = 10;
-var MAX_X = 1000; // temp
-var MAX_Y = 1000; // temp
+// * init values place view on initial load neatly in in the center
+var ROOT_X = 5; 
+var ROOT_Y = -15;
+// * temp values, overriden on load and resize
+var MIN_X = 0; 
+var MIN_Y = 0; 
+var MAX_X = 0; 
+var MAX_Y = 0; 
 
 // controls if the grid should be drawn
 var SHOULD_DRAW_GRID = true;
