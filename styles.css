@@ -3,6 +3,15 @@
     margin: 0;
     padding: 0; 
 
+    /* global transition duration */
+    transition-duration: 600ms;
+
+    /* default font settings */
+    font-family : Times;
+    font-size : 14px;
+}
+
+.anchored{
     /* sets all positiong as absolute 
     (this allows overlaying components over canvas) */
     position: absolute;
@@ -15,7 +24,6 @@
 
 /* View Move Panels */
 .view_move_hidden_panel{
-    transition-duration: 600ms;
     opacity: 0.0;
     background-color: black;
 }
@@ -34,36 +42,78 @@
 }
 
 .control_panel:hover{
-    opacity: 0.5;
+    opacity: 0.8;
     transform: scaleX(1.03);
 }
 
 #new_simulation_panel{
     margin-left: 55px;
     margin-top: 35px;
-    width: 200px;
+    width: 240px;
     height: 350px;
 }
 
 #interract_panel{
     margin-left: 55px;
     margin-top: 400px;
-    width: 200px;
+    width: 240px;
     height: 250px;
 }
 
 /* controlls */
 .input{
     margin: 5px;
-    position: static;
 }
 
-.slider{
-    width: 190px;
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    outline: none; 
+
+    appearance: none;
+    width: 120px;
+    height: 10px;
+    background: #777777;
+    border-radius: 5px;
+}
+.slider:hover{
+    background: #999999;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 6px; 
+    height: 12px;
+    background: #232423;
+    cursor: pointer; 
+    border-radius: 50%;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 6px;
+    height: 12px;
+    background: #232423;
+    cursor: pointer; 
+    border-radius: 50%;
+
+  }
+.button{
     height: 20px;
 }
-
 .button_small{
     width: 20px;
-    height: 20px;
+}
+
+.button_big{
+    width: 60px;
+}
+
+.input_description{
+    display: inline-block;
+    width: 55px;
+    padding-left: 5px;
+}
+.dynamic_value{
+    display: inline-block;
+    width: 30px;
 }

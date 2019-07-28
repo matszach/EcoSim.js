@@ -15,8 +15,21 @@ const NS_SLD_NOF_PONDS = document.getElementById("ns_sld_nof_ponds");
 const NS_SLD_POND_SIZE = document.getElementById("ns_sld_pond_size");
 const NS_SLD_PLANT_DENSITY = document.getElementById("ns_sld_plant_density");
 
+const NS_SLD_WIDTH_VAL = document.getElementById("ns_sld_width_val");
+const NS_SLD_HEIGHT_VAL = document.getElementById("ns_sld_height_val");
+const NS_SLD_RABBITS_VAL = document.getElementById("ns_sld_rabbits_val");
+const NS_SLD_FOXES_VAL = document.getElementById("ns_sld_foxes_val");
+const NS_SLD_NOF_PONDS_VAL = document.getElementById("ns_sld_nof_ponds_val");
+const NS_SLD_POND_SIZE_VAL = document.getElementById("ns_sld_pond_size_val");
+const NS_SLD_PLANT_DENSITY_VAL = document.getElementById("ns_sld_plant_density_val");
 
-const SLD_SCALE = document.getElementById("scale_slider");
+
+const SLD_SCALE = document.getElementById("ns_sld_scale");
+const SLD_DELAY = document.getElementById("ns_sld_delay");
+
+const SLD_SCALE_VAL = document.getElementById("ns_sld_scale_val");
+const SLD_DELAY_VAL = document.getElementById("ns_sld_delay_val");
+
 
 
 // fits canvas, and other componets to window
@@ -116,7 +129,7 @@ function setScale(newUnitSize){
     ROOT_Y -= Math.round(hOld - hNew);
 
     UNIT = newUnitSize;
-    SLD_SCALE.value = UNIT;
+    SLD_SCALE.value  = UNIT;
 }
 
 function setScaleByWheel(delta){
@@ -130,10 +143,23 @@ function setScaleByWheel(delta){
 window.addEventListener('wheel', (e) => setScaleByWheel(e.deltaY));
 
 
+function doUpdateValues(){
+    NS_SLD_WIDTH_VAL.innerHTML = NS_SLD_WIDTH.value;
+    NS_SLD_HEIGHT_VAL.innerHTML = NS_SLD_HEIGHT.value;
+    NS_SLD_RABBITS_VAL.innerHTML = NS_SLD_RABBITS.value;
+    NS_SLD_FOXES_VAL.innerHTML = NS_SLD_FOXES.value; 
+    NS_SLD_NOF_PONDS_VAL.innerHTML = NS_SLD_NOF_PONDS.value;
+    NS_SLD_POND_SIZE_VAL.innerHTML = NS_SLD_POND_SIZE.value; 
+    NS_SLD_PLANT_DENSITY_VAL.innerHTML = NS_SLD_PLANT_DENSITY.value; 
+    SLD_SCALE_VAL.innerHTML = SLD_SCALE.value; 
+    SLD_DELAY_VAL.innerHTML = SLD_DELAY.value; 
+}
+
 
 function doAdjustView(){
     doMoveView();
     doAdjustScale();
+    doUpdateValues();
 }
 
 

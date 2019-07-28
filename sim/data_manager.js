@@ -1,0 +1,5 @@
+// current state variables
+var DATA_CURR_NOF_RABBIT_MALE = 0;
+var DATA_CURR_NOF_RABBIT_FEMALE = 0;
+var DATA_CURR_NOF_FOX_MALE = 0;
+var DATA_CURR_NOF_FOX_FEMALE = 0;

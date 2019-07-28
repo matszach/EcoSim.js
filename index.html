@@ -12,36 +12,76 @@
         <script type="text/javascript" src="view/const.js"></script>
         <script type="text/javascript" src="sim/sim_variables.js"></script>
         <script type="text/javascript" src="sim/nearbyFieldIterator.js"></script>
+        <script type="text/javascript" src="sim/data_manager.js"></script>
 
     </head>
 
     <body>
 
         <!-- canvas, takes the entire background -->
-        <canvas id="main_canvas"></canvas>
+        <canvas class="anchored" id="main_canvas"></canvas>
 
         <!-- allow view movement on mouse hover -->
-        <div class="view_move_hidden_panel" id="vmhp_left"></div>
-        <div class="view_move_hidden_panel" id="vmhp_top"></div>
-        <div class="view_move_hidden_panel" id="vmhp_right"></div>
-        <div class="view_move_hidden_panel" id="vmhp_bottom"></div>
+        <div class="anchored view_move_hidden_panel" id="vmhp_left"></div>
+        <div class="anchored view_move_hidden_panel" id="vmhp_top"></div>
+        <div class="anchored view_move_hidden_panel" id="vmhp_right"></div>
+        <div class="anchored view_move_hidden_panel" id="vmhp_bottom"></div>
 
         <!-- tranparent controll pannels -->
-        <div class="control_panel" id="new_simulation_panel">
-            <input class="input slider" type="range" id="ns_sld_width" min=10 max=500 value=80>
-            <input class="input slider" type="range" id="ns_sld_height" min=10 max=500 value=60>
-            <input class="input slider" type="range" id="ns_sld_rabbits" min=0 max=3000 value=80>
-            <input class="input slider" type="range" id="ns_sld_foxes" min=0 max=3000 value=12>
-            <input class="input slider" type="range" id="ns_sld_nof_ponds" min=1 max=300 value=20>
-            <input class="input slider" type="range" id="ns_sld_pond_size" min=0 max=50 value=25>
-            <input class="input slider" type="range" id="ns_sld_plant_density" min=0 max=100 value=25>
+        <div class="anchored control_panel" id="new_simulation_panel">
+            <div class="slider_div">
+                <label class="input_description">Width</label>
+                <input class="input slider" type="range" id="ns_sld_width" min=10 max=500 value=80>
+                <label class="dynamic_value" id="ns_sld_width_val">[TEMP]</label>
+            </div>
+            <div class="slider_div">
+                <label class="input_description">Height</label>
+                <input class="input slider" type="range" id="ns_sld_height" min=10 max=500 value=60>
+                <label class="dynamic_value" id="ns_sld_height_val">[TEMP]</label>
+            </div>            
+            <div class="slider_div">
+                <label class="input_description">Rabbits</label>
+                <input class="input slider" type="range" id="ns_sld_rabbits" min=0 max=3000 value=80>
+                <label class="dynamic_value" id="ns_sld_rabbits_val">[TEMP]</label>
+            </div>
+            <div class="slider_div">
+                <label class="input_description">Foxes</label>
+                <input class="input slider" type="range" id="ns_sld_foxes" min=0 max=3000 value=12>
+                <label class="dynamic_value" id="ns_sld_foxes_val">[TEMP]</label>
+            </div>
+            <div class="slider_div">
+                <label class="input_description">Ponds</label>
+                <input class="input slider" type="range" id="ns_sld_nof_ponds" min=1 max=300 value=20>
+                <label class="dynamic_value" id="ns_sld_nof_ponds_val">[TEMP]</label>
+            </div>
+            <div class="slider_div">
+                <label class="input_description">Pond size</label>
+                <input class="input slider" type="range" id="ns_sld_pond_size" min=0 max=50 value=25>
+                <label class="dynamic_value" id="ns_sld_pond_size_val">[TEMP]</label>
+            </div>
+            <div class="slider_div">
+                <label class="input_description">Plants</label>
+                <input class="input slider" type="range" id="ns_sld_plant_density" min=0 max=100 value=25>
+                <label class="dynamic_value" id="ns_sld_plant_density_val">[TEMP]</label>
+            </div>
 
-            <input class="input button_small" type="submit" value="new" 
+            <input class="input button button_big" type="submit" value="Generate" 
             onclick="doGenerate()">
         </div>
 
-        <div class="control_panel" id="interract_panel">
-            <input class="input slider" type="range" id="scale_slider" min=1 max=96 value=24>
+        <div class="anchored control_panel" id="interract_panel">
+            <div class="slider_div">    
+                <label class="input_description">Zoom</label>
+                <input class="input slider" type="range" id="ns_sld_scale" min=1 max=96 value=24>
+                <label class="dynamic_value" id="ns_sld_scale_val">[TEMP]</label>
+            </div>            
+            <div class="slider_div">
+                <label class="input_description">Delay</label>
+                <input class="input slider" type="range" id="ns_sld_delay" min=1 max=200 value=50
+                onchange="updateInterval(this.value)">
+                <label class="dynamic_value" id="ns_sld_delay_val">[TEMP]</label>
+            </div>
+
         </div>
 
         <!-- post-load scripts -->

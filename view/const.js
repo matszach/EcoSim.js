@@ -28,7 +28,6 @@ const GRASS_FIELD_ID = 1;
 const SHALLOW_WATER_FIELD_ID = 2;
 const DEEP_WATER_FIELD_ID = 3;
 
-
 const ANIMAL_TYPE_ID = 0;
 const RABBIT_TYPE_ID = 1;
 const FOX_TYPE_ID = 2;
