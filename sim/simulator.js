@@ -62,12 +62,13 @@ function actAndDrawAnimals() {
     for(x = 0; x < fieldsMap.length; x++){
         for(y = 0; y < fieldsMap[x].length; y++){
             if(animalsMap[x][y] != null){
-                if (!animalsMap[x][y].isAlive){
+                a = animalsMap[x][y];
+                if (!a.isAlive){
                     animalsMap[x][y] = null;
                 } else {
-                    animalsMap[x][y].doActAndDraw(x, y);
+                    a.doActAndDraw(x, y);
+                
                 }
-
             }
         }
     }
@@ -75,7 +76,9 @@ function actAndDrawAnimals() {
     for(x = 0; x < fieldsMap.length; x++){
         for(y = 0; y < fieldsMap[x].length; y++){
             if(animalsMap[x][y] != null){
-                animalsMap[x][y].postMove(x, y);
+                a = animalsMap[x][y]
+                a.postMove(x, y);
+                countAnimal(a);
             }
         }
     }
@@ -84,8 +87,16 @@ function actAndDrawAnimals() {
 doGenerate();
 
 function runOneSimulationRound(){
+
+    // resets data manager
+    resetData();
+
+    // performs simulation logic, draws view and generates data
     drawFiels();
     growAndDrawPlats();
     actAndDrawAnimals();
+   
+    // displas data in interaction panel
+    displayData();
 }
 
