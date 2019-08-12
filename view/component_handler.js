@@ -23,6 +23,24 @@ const NS_SLD_RABBITS_VAL = document.getElementById("ns_sld_rabbits_val");
 const NS_SLD_FOXES = document.getElementById("ns_sld_foxes");
 const NS_SLD_FOXES_VAL = document.getElementById("ns_sld_foxes_val");
 
+// animal variables
+const NS_SLD_CHILD_HUNGER_COST = document.getElementById("ns_sld_child_hunger_cost");
+const NS_SLD_CHILD_HUNGER_COST_VAL = document.getElementById("ns_sld_child_hunger_cost_val");
+const NS_SLD_CHILD_THIRST_COST = document.getElementById("ns_sld_child_thirst_cost");
+const NS_SLD_CHILD_THIRST_COST_VAL = document.getElementById("ns_sld_child_thirst_cost_val");
+const NS_SLD_CHILD_SATISFACTION = document.getElementById("ns_sld_child_satisfaction");
+const NS_SLD_CHILD_SATISFACTION_VAL = document.getElementById("ns_sld_child_satisfaction_val");
+
+// costs 
+const NS_SLD_SPEED_HUNGER_COST = document.getElementById("ns_sld_speed_hunger_cost");
+const NS_SLD_SPEED_HUNGER_COST_VAL = document.getElementById("ns_sld_speed_hunger_cost_val");
+const NS_SLD_SIGHT_HUNGER_COST = document.getElementById("ns_sld_sight_hunger_cost");
+const NS_SLD_SIGHT_HUNGER_COST_VAL = document.getElementById("ns_sld_sight_hunger_cost_val");
+const NS_SLD_SPEED_THIRST_COST = document.getElementById("ns_sld_speed_thirst_cost");
+const NS_SLD_SPEED_THIRST_COST_VAL = document.getElementById("ns_sld_speed_thirst_cost_val");
+const NS_SLD_SIGHT_THIRST_COST = document.getElementById("ns_sld_sight_thirst_cost");
+const NS_SLD_SIGHT_THIRST_COST_VAL = document.getElementById("ns_sld_sight_thirst_cost_val");
+
 // plants
 const NS_SLD_PLANT_DENSITY = document.getElementById("ns_sld_plant_density");
 const NS_SLD_PLANT_DENSITY_VAL = document.getElementById("ns_sld_plant_density_val");
@@ -159,10 +177,19 @@ function doUpdateValues(){
 
     NS_SLD_RABBITS_VAL.innerHTML = NS_SLD_RABBITS.value;
     NS_SLD_FOXES_VAL.innerHTML = NS_SLD_FOXES.value; 
+
+    NS_SLD_CHILD_HUNGER_COST_VAL.innerHTML = NS_SLD_CHILD_HUNGER_COST.value;
+    NS_SLD_CHILD_THIRST_COST_VAL.innerHTML = NS_SLD_CHILD_THIRST_COST.value;
+    NS_SLD_CHILD_SATISFACTION_VAL.innerHTML = NS_SLD_CHILD_SATISFACTION.value;
+
+    NS_SLD_SPEED_HUNGER_COST_VAL.innerHTML = Math.round(NS_SLD_SPEED_HUNGER_COST.value*10000); // preetying up the display
+    NS_SLD_SIGHT_HUNGER_COST_VAL.innerHTML = Math.round(NS_SLD_SIGHT_HUNGER_COST.value*10000);
+    NS_SLD_SPEED_THIRST_COST_VAL.innerHTML = Math.round(NS_SLD_SPEED_THIRST_COST.value*10000);
+    NS_SLD_SIGHT_THIRST_COST_VAL.innerHTML = Math.round(NS_SLD_SIGHT_THIRST_COST.value*10000);
     
     NS_SLD_PLANT_DENSITY_VAL.innerHTML = NS_SLD_PLANT_DENSITY.value + '%'; 
     NS_SLD_PLANT_SPAWN_VAL.innerHTML = Math.round(NS_SLD_PLANT_SPAWN.value*100000); // preetying up the display
-    NS_SLD_PLANT_GROWTH_VAL.innerHTML = Math.round(NS_SLD_PLANT_GROWTH.value*100);  // preetying up the display
+    NS_SLD_PLANT_GROWTH_VAL.innerHTML = Math.round(NS_SLD_PLANT_GROWTH.value*100);  
 
     SLD_SCALE_VAL.innerHTML = SLD_SCALE.value; 
     SLD_DELAY_VAL.innerHTML = SLD_DELAY.value; 

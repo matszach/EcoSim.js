@@ -80,7 +80,57 @@
 
             <!-- HORISONTAL LINE -->
             <hr class="horline">
-            
+
+            <!-- CHILD HUNGER COST -->
+            <div class="slider_div">
+                <label class="input_description">Child h. cost</label>
+                <input class="input slider" type="range" id="ns_sld_child_hunger_cost" min=1 max=100 value=45>
+                <label class="dynamic_value" id="ns_sld_child_hunger_cost_val">[TEMP]</label>
+            </div>
+            <!-- CHILD THIRST COST -->
+            <div class="slider_div">
+                <label class="input_description">Child t. cost</label>
+                <input class="input slider" type="range" id="ns_sld_child_thirst_cost" min=1 max=100 value=20>
+                <label class="dynamic_value" id="ns_sld_child_thirst_cost_val">[TEMP]</label>
+            </div>
+            <!-- CHILD SATISFACTION -->
+            <div class="slider_div">
+                <label class="input_description">Child satisf.</label>
+                <input class="input slider" type="range" id="ns_sld_child_satisfaction" min=1 max=100 value=25>
+                <label class="dynamic_value" id="ns_sld_child_satisfaction_val">[TEMP]</label>
+            </div>
+
+            <!-- HORISONTAL LINE -->
+            <hr class="horline">
+
+            <!-- SPEED HUNGER COST -->
+            <div class="slider_div">
+                <label class="input_description">Speed h. cost</label>
+                <input class="input slider" type="range" id="ns_sld_speed_hunger_cost" min=0.0001 max=0.005 value=0.0005 step=0.0001>
+                <label class="dynamic_value" id="ns_sld_speed_hunger_cost_val">[TEMP]</label>
+            </div>
+            <!-- SIGHT HUNGER COST -->
+            <div class="slider_div">
+                <label class="input_description">Sight h. cost</label>
+                <input class="input slider" type="range" id="ns_sld_sight_hunger_cost" min=0.0001 max=0.005 value=0.0005 step=0.0001>
+                <label class="dynamic_value" id="ns_sld_sight_hunger_cost_val">[TEMP]</label>
+            </div>
+            <!-- SPEED THIRST COST -->
+            <div class="slider_div">
+                <label class="input_description">Speed t. cost</label>
+                <input class="input slider" type="range" id="ns_sld_speed_thirst_cost" min=0.0001 max=0.005 value=0.0009 step=0.0001>
+                <label class="dynamic_value" id="ns_sld_speed_thirst_cost_val">[TEMP]</label>
+            </div>
+            <!-- SIGHT THIRST COST -->
+            <div class="slider_div">
+                <label class="input_description">Sight t. cost</label>
+                <input class="input slider" type="range" id="ns_sld_sight_thirst_cost" min=0.0001 max=0.005 value=0.0009 step=0.0001>
+                <label class="dynamic_value" id="ns_sld_sight_thirst_cost_val">[TEMP]</label>
+            </div>
+
+            <!-- HORISONTAL LINE -->
+            <hr class="horline">
+
             <!-- INITIAL PLANT DENSITY -->
             <div class="slider_div">
                 <label class="input_description">Plants</label>
@@ -90,14 +140,14 @@
             
             <!-- PLANT SPAWN CHANCE -->
             <div class="slider_div">
-                <label class="input_description">Spawn</label>
+                <label class="input_description">Spawn rate</label>
                 <input class="input slider" type="range" id="ns_sld_plant_spawn" min=0.00001 max=0.01 value=0.0005 step=0.00001>
                 <label class="dynamic_value" id="ns_sld_plant_spawn_val">[TEMP]</label>
             </div>
 
             <!-- PLANT GROWNTH RATE -->            
             <div class="slider_div">
-                <label class="input_description">Growth</label>
+                <label class="input_description">Growth rate</label>
                 <input class="input slider" type="range" id="ns_sld_plant_growth" min=0.01 max=1 value=0.1 step=0.01>
                 <label class="dynamic_value" id="ns_sld_plant_growth_val">[TEMP]</label>
             </div>

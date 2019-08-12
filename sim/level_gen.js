@@ -13,6 +13,16 @@ function doGenerate(){
     // adjusting the simulation variables
     PLANT_SPAWN_CHANCE = parseFloat(NS_SLD_PLANT_SPAWN.value);
     PLANT_GROWTH_RATE = parseFloat(NS_SLD_PLANT_GROWTH.value);
+
+    CHILD_HUNGER_COST = parseInt(NS_SLD_CHILD_HUNGER_COST.value);
+    CHILD_THIRST_COST = parseInt(NS_SLD_CHILD_THIRST_COST.value);
+    CHILD_SATISFACTION = parseInt(NS_SLD_CHILD_SATISFACTION.value);
+
+    SPEED_HUNGER_COST = parseFloat(NS_SLD_SPEED_HUNGER_COST.value);
+    SIGHT_HUNGER_COST = parseFloat(NS_SLD_SIGHT_HUNGER_COST.value);
+    SPEED_THIRST_COST = parseFloat(NS_SLD_SPEED_THIRST_COST.value);
+    SIGHT_THIRST_COST = parseFloat(NS_SLD_SIGHT_THIRST_COST.value);
+
 }
 
 function generateLevel(width, height, nof_rabbits, nof_foxes, nof_ponds, pond_size, plant_density){

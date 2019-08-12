@@ -43,20 +43,20 @@
 
 .control_panel:hover{
     opacity: 0.8;
-    transform: translate(7px) scaleX(1.05);
+    transform: translate(5px) scaleX(1.03);
 }
 
 #new_simulation_panel{
     margin-left: 55px;
     margin-top: 35px;
-    width: 230px;
+    width: 250px;
     height: 450px;
 }
 
 #interract_panel{
     margin-left: 55px;
     margin-top: 500px;
-    width: 230px;
+    width: 250px;
     height: 150px;
 }
 
@@ -99,7 +99,24 @@
   }
 .button{
     height: 20px;
+    background-color: #777777;
+    border-radius: 5px;
+    border-style: none;
+    outline: none;
+    border: none;
+    cursor: pointer; 
 }
+
+.button:hover{
+    background-color: #999999;
+    transform: scale(1.05);
+}
+
+.button:active{
+    background-color: #dddddd;
+    transform: scale(1.00);
+}
+
 .button_small{
     width: 20px;
 }
@@ -110,7 +127,7 @@
 
 .input_description{
     display: inline-block;
-    width: 55px;
+    width: 75px;
     padding-left: 5px;
 }
 .dynamic_value{
@@ -123,4 +140,10 @@ h1{
     margin: auto;
     text-align: center;
     padding-bottom: 5px;
+}
+
+.horline{
+    height: 2px;
+    background-color: #999999;
+    border-radius: 50%;
 }
