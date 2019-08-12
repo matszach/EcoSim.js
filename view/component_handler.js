@@ -60,6 +60,8 @@ const DATA_DISP_MALE_RABBITS = document.getElementById("data_male_rabbits");
 const DATA_DISP_FEMALE_RABBITS = document.getElementById("data_female_rabbits");
 const DATA_DISP_MALE_FOXES = document.getElementById("data_male_foxes");
 const DATA_DISP_FEMALE_FOXES = document.getElementById("data_female_foxes");
+const DATA_DISP_NOF_PLANTS = document.getElementById("data_nof_plants");
+const DATA_DISP_AMT_FOOD = document.getElementById("data_amt_food");
 
 // fits canvas, and other componets to window
 function fitToWindow(){

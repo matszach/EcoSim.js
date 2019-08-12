@@ -33,7 +33,7 @@ function countAnimal(animal){
 
 function countPlant(plantValue){
     DATA_CURR_NOF_PLANTS += 1;
-    DATA_CURR_AMT_FOOD += plantValue;
+    DATA_CURR_AMT_FOOD += plantValue
 }
 
 function displayData(){
@@ -41,4 +41,6 @@ function displayData(){
     DATA_DISP_FEMALE_RABBITS.innerHTML = DATA_CURR_NOF_RABBIT_FEMALE;
     DATA_DISP_MALE_FOXES.innerHTML = DATA_CURR_NOF_FOX_MALE;
     DATA_DISP_FEMALE_FOXES.innerHTML = DATA_CURR_NOF_FOX_FEMALE;
+    DATA_DISP_NOF_PLANTS.innerHTML = DATA_CURR_NOF_PLANTS;
+    DATA_DISP_AMT_FOOD.innerHTML = "("+(DATA_CURR_AMT_FOOD/1000).toFixed(2)+"k)";
 }
