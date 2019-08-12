@@ -56,7 +56,10 @@ const SLD_DELAY = document.getElementById("ns_sld_delay");
 const SLD_SCALE_VAL = document.getElementById("ns_sld_scale_val");
 const SLD_DELAY_VAL = document.getElementById("ns_sld_delay_val");
 
-
+const DATA_DISP_MALE_RABBITS = document.getElementById("data_male_rabbits");
+const DATA_DISP_FEMALE_RABBITS = document.getElementById("data_female_rabbits");
+const DATA_DISP_MALE_FOXES = document.getElementById("data_male_foxes");
+const DATA_DISP_FEMALE_FOXES = document.getElementById("data_female_foxes");
 
 // fits canvas, and other componets to window
 function fitToWindow(){

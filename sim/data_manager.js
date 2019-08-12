@@ -3,12 +3,16 @@ var DATA_CURR_NOF_RABBIT_MALE = 0;
 var DATA_CURR_NOF_RABBIT_FEMALE = 0;
 var DATA_CURR_NOF_FOX_MALE = 0;
 var DATA_CURR_NOF_FOX_FEMALE = 0;
+var DATA_CURR_NOF_PLANTS = 0;
+var DATA_CURR_AMT_FOOD = 0;
 
 function resetData(){
     DATA_CURR_NOF_RABBIT_MALE = 0;
     DATA_CURR_NOF_RABBIT_FEMALE = 0;
     DATA_CURR_NOF_FOX_MALE = 0;
     DATA_CURR_NOF_FOX_FEMALE = 0;
+    DATA_CURR_NOF_PLANTS = 0;
+    DATA_CURR_AMT_FOOD = 0;
 }
 
 function countAnimal(animal){
@@ -27,6 +31,14 @@ function countAnimal(animal){
     }
 }
 
+function countPlant(plantValue){
+    DATA_CURR_NOF_PLANTS += 1;
+    DATA_CURR_AMT_FOOD += plantValue;
+}
+
 function displayData(){
-    // TODO
+    DATA_DISP_MALE_RABBITS.innerHTML = DATA_CURR_NOF_RABBIT_MALE;
+    DATA_DISP_FEMALE_RABBITS.innerHTML = DATA_CURR_NOF_RABBIT_FEMALE;
+    DATA_DISP_MALE_FOXES.innerHTML = DATA_CURR_NOF_FOX_MALE;
+    DATA_DISP_FEMALE_FOXES.innerHTML = DATA_CURR_NOF_FOX_FEMALE;
 }

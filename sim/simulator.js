@@ -36,12 +36,16 @@ function growAndDrawPlats() {
 
             v = plantsMap[x][y]
             if(v > 0){
+
                 if(v < PLANT_MAX_VALUE){
                     plantsMap[x][y] += PLANT_GROWTH_RATE;
                 }
+
                 scale = v/PLANT_MAX_VALUE*MAX_VALUE_PLANT_DRAW_SIZE;
                 off = -scale/2 + 0.5
                 CTX.fillRect((ROOT_X+x+off)*UNIT,(ROOT_Y+y+off)*UNIT, scale*UNIT, scale*UNIT);
+
+                countPlant(v);
 
             } else if (fieldsMap[x][y] == GRASS_FIELD_ID){
                 if(Math.random() < PLANT_SPAWN_CHANCE){
@@ -67,7 +71,6 @@ function actAndDrawAnimals() {
                     animalsMap[x][y] = null;
                 } else {
                     a.doActAndDraw(x, y);
-                
                 }
             }
         }
@@ -78,6 +81,7 @@ function actAndDrawAnimals() {
             if(animalsMap[x][y] != null){
                 a = animalsMap[x][y]
                 a.postMove(x, y);
+                
                 countAnimal(a);
             }
         }
