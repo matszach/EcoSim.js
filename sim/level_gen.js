@@ -1,5 +1,8 @@
 function doGenerate(){
 
+    // removes any artifacts from previous simulations
+    hardResetDataManager();
+
     // generating the map
     width = parseInt(NS_SLD_WIDTH.value);
     height = parseInt(NS_SLD_HEIGHT.value);

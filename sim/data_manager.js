@@ -39,12 +39,7 @@ function trySaveData(){
 
 function manageData(){
     trySaveData();
-    DATA_CURR_NOF_RABBIT_MALE = 0;
-    DATA_CURR_NOF_RABBIT_FEMALE = 0;
-    DATA_CURR_NOF_FOX_MALE = 0;
-    DATA_CURR_NOF_FOX_FEMALE = 0;
-    DATA_CURR_NOF_PLANTS = 0;
-    DATA_CURR_AMT_FOOD = 0;
+    softResetDataManager();
 }
 
 function countAnimal(animal){
@@ -77,20 +72,41 @@ function displayData(){
     DATA_DISP_AMT_FOOD.innerHTML = "("+(DATA_CURR_AMT_FOOD/1000).toFixed(2)+"k)";
 }
 
+// resets data manager
+function softResetDataManager(){
+    DATA_CURR_NOF_RABBIT_MALE = 0;
+    DATA_CURR_NOF_RABBIT_FEMALE = 0;
+    DATA_CURR_NOF_FOX_MALE = 0;
+    DATA_CURR_NOF_FOX_FEMALE = 0;
+    DATA_CURR_NOF_PLANTS = 0;
+    DATA_CURR_AMT_FOOD = 0;
+}
+function hardResetDataManager(){
+    softResetDataManager();
+    data_timer = 0;
+    data_stack = [];
+}
 
 // generating data files
 function generateDataCSV(){
 
+    // builds data file
     text = ',nof_rabbit_male,nof_rabbit_female,nof_fox_male,nof_fox_female,nof_plants,amt_food';
     for(i = 0; i < data_stack.length; i++){
         d = data_stack[i];
-        text += '\n'+d[0]+','+d[1]+','+d[2]+','+d[3]+','+d[4]+','+d[5];
+        text += '\n' + i + 
+            ',' + d[0] + 
+            ',' + d[1] + 
+            ',' + d[2] + 
+            ',' + d[3] + 
+            ',' + d[4] + 
+            ',' + Math.round(d[5]);
     }
 
+    // creates a temporary html element and prompts file download
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', 'data.csv');
-
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();
