@@ -92,8 +92,8 @@ doGenerate();
 
 function runOneSimulationRound(){
 
-    // resets data manager
-    resetData();
+    // data manager
+    manageData();
 
     // performs simulation logic, draws view and generates data
     drawFiels();
